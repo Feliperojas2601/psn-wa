@@ -5,7 +5,7 @@ import { PagesRoutingModule } from './pages/pages-routing.module';
 import { NotfoundComponent } from './shared/notfound/notfound.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/psn', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent },
 ];
 
