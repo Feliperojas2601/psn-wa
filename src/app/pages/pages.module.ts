@@ -6,6 +6,8 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { PostsModule } from './posts/posts.module';
 import { UserrsModule } from './userrs/userrs.module';
 import { UserModule } from './user/user.module';
+import { SharedModule } from '../shared/shared.module';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -19,7 +21,9 @@ import { UserModule } from './user/user.module';
     NotificationsModule, 
     PostsModule, 
     UserModule,
-    UserrsModule
+    UserrsModule, 
+    SharedModule, 
+    RouterModule
   ]
 })
 export class PagesModule { }
