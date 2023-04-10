@@ -1,1 +1,23 @@
-<p>conversation-detail works!</p>
+<div class="container">
+  <div class="topbar p-d-flex p-ai-center p-shadow-1">
+    <button type="button" class="p-button p-button-icon p-mr-2">
+      <i class="pi pi-arrow-left"></i>
+    </button>
+    <h2 class="p-m-0">Tu conversación</h2>
+  </div>  
+  <div class="p-grid">
+    <div class="p-col-12">
+      <div class="messages-container">
+        <ul class="messages-list">
+          <li class="message" *ngFor="let message of messages">
+            <app-message-detail [message]="message" [isUser]="message.active"></app-message-detail>
+          </li>
+        </ul>
+      </div>
+      <div class="message-input-container p-d-flex">
+        <input type="text" placeholder="Escribe tu mensaje aquí" class="p-inputtext p-d-block">
+        <button type="button" label="Enviar" class="p-button p-button-primary p-ml-2">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>

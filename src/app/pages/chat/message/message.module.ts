@@ -10,6 +10,9 @@ import { MessageDetailComponent } from './components/message-detail/message-deta
   ],
   imports: [
     CommonModule
+  ], 
+  exports: [
+    MessageDetailComponent
   ]
 })
 export class MessageModule { }

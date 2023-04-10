@@ -4,8 +4,7 @@ import { ChatComponent } from './chat.component';
 import { ConversationModule } from './conversation/conversation.module';
 import { MessageModule } from './message/message.module';
 import { RouterModule } from '@angular/router';
-
-
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +15,9 @@ import { RouterModule } from '@angular/router';
     ConversationModule, 
     MessageModule, 
     RouterModule
+  ], 
+  exports: [
+    
   ]
 })
 export class ChatModule { }

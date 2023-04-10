@@ -7,4 +7,25 @@ import { Component } from '@angular/core';
 })
 export class ConversationDetailComponent {
 
+  public messages = [
+  {
+    id: 'sadds',
+    content: 'Hello World',
+    userId: 1,
+    conversationId: 'asdassd',
+    createDate: new Date(),
+    updateDate:new Date(),
+    active: true,
+  }, 
+  {
+    id: 'sadds',
+    content: 'Hello World',
+    userId: 1,
+    conversationId: 'asdassd',
+    createDate: new Date(),
+    updateDate:new Date(),
+    active: false,
+  }, 
+];
+
 }

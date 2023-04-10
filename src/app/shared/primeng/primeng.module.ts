@@ -4,6 +4,8 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
+import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
+
 
 @NgModule({
   declarations: [],
@@ -13,6 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
     CardModule,
     DividerModule,
     InputTextModule,
+    DataViewModule, 
   ], 
   exports: [
     CommonModule,
@@ -20,6 +23,7 @@ import { InputTextModule } from 'primeng/inputtext';
     CardModule,
     DividerModule,
     InputTextModule,
+    DataViewModule, 
   ]
 })
 export class PrimengModule { }

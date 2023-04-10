@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Conversation } from '../../models/conversation.model';
 
 @Component({
   selector: 'app-conversation-list',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./conversation-list.component.css']
 })
 export class ConversationListComponent {
+
+  public conversations: Conversation[] = [{
+    id: '1',
+    membersId: [1, 2],  
+    createDate: new Date(),
+    updateDate: new Date(),
+  }];
 
 }

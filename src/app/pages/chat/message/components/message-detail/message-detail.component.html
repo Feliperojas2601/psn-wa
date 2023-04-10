@@ -1,1 +1,11 @@
-<p>message-detail works!</p>
+<div class="container">
+  <div class="message-container" [ngClass]="{ 'user-message': isUser, 'message-mine': isUser }">
+    <div class="message-details">
+      <span class="message-author p-text-bold">{{ message.userId }}</span>
+      <span class="message-time">{{ message.createDate | date:'shortTime' }}</span>
+    </div>
+    <div class="message-content">
+      {{ message.content }}
+    </div>
+  </div>
+</div>
