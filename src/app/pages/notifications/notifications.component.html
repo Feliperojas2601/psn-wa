@@ -1,1 +1,16 @@
-<p>notifications works!</p>
+<div class="container">
+  <div class="topbar p-d-flex p-ai-center p-shadow-1">
+    <h2 class="p-m-0 header">Tus notificaciones</h2>
+  </div>  
+  <div class="p-grid">
+    <div class="p-col-12">
+      <div class="notifications-container">
+        <ul class="notifications-list">
+          <li class="notification" *ngFor="let notification of notifications">
+            <app-notification-detail [notification]="notification"></app-notification-detail>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

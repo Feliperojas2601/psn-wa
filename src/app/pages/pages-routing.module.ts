@@ -11,8 +11,17 @@ const routes: Routes = [
         canLoad: [ AuthGuard ],
         children: [
             { 
+                path: '', // redirige a /psn/chat
+                redirectTo: 'chat',
+                pathMatch: 'full'
+            },
+            { 
                 path: 'chat', 
                 loadChildren: () => import('./chat/chat-routing.module').then(m => m.ChatRoutingModule) 
+            },
+            { 
+                path: 'notifications', 
+                loadChildren: () => import('./notifications/notifications-routing.module').then(m => m.NotificationsRoutingModule) 
             },
         ]
     },

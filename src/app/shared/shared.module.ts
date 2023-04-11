@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotfoundComponent } from './notfound/notfound.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 import { PrimengModule } from './primeng/primeng.module';
+import { MenubarComponent } from './components/menubar/menubar.component';
 
 
 
 @NgModule({
   declarations: [
-    NotfoundComponent
+    NotfoundComponent,
+    MenubarComponent
   ],
   imports: [
     CommonModule, 
@@ -16,6 +18,7 @@ import { PrimengModule } from './primeng/primeng.module';
   exports: [ 
     CommonModule, 
     PrimengModule,
+    MenubarComponent,
   ]
 })
 export class SharedModule { }

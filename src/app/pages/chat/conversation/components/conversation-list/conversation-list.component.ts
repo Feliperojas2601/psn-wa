@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Conversation } from '../../models/conversation.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-conversation-list',
@@ -14,5 +15,13 @@ export class ConversationListComponent {
     createDate: new Date(),
     updateDate: new Date(),
   }];
+
+  constructor(private router: Router) {}
+
+  public navigateToConversation(id: number): void {
+    const currentUrl = this.router.url;
+    const newUrl = `${currentUrl}/${id}`;
+    this.router.navigateByUrl(newUrl);
+  }
 
 }

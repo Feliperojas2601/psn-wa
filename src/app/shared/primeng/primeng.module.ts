@@ -5,6 +5,7 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
+import { MenubarModule } from 'primeng/menubar';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
     DividerModule,
     InputTextModule,
     DataViewModule, 
+    MenubarModule,
   ], 
   exports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
     CardModule,
     DividerModule,
     InputTextModule,
-    DataViewModule, 
+    DataViewModule,
+    MenubarModule, 
   ]
 })
 export class PrimengModule { }

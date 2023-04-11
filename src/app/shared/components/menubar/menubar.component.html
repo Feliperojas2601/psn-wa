@@ -1,0 +1,12 @@
+<div class="container">
+  <p-menubar [model]="items">
+    <ng-template pTemplate="start">
+        <img src="../../../../assets/images/logo.jpg" height="60" class="mr-2" />
+    </ng-template>
+    <ng-template pTemplate="end">
+      <button type="button" class="p-button p-button-icon p-mr-2" routerLink="/psn/notifications">
+        <i class="pi pi-bell"></i>
+      </button>
+    </ng-template>
+  </p-menubar>
+</div>

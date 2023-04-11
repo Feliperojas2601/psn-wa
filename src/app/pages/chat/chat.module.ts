@@ -14,7 +14,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule, 
     ConversationModule, 
     MessageModule, 
-    RouterModule
+    RouterModule, 
+    SharedModule
   ], 
   exports: [
     
