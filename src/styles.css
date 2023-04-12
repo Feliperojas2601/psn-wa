@@ -4,4 +4,15 @@ body {
 	line-height: 1.4; /* 1.5 */
 	color: #000;
 	background-color: #fff;
+	background-image: url('./assets/images/background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+:root {
+  --primary-color: #4693ad;
+  --secondary-color: #83ADBB;
+	--tertiary-color: #31687A;
+	--quaternary-color: #AFE7FA;
 }

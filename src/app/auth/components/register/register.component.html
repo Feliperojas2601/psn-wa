@@ -1,22 +1,47 @@
-
-<div class="grid">
-  <div class="col-5 flex align-items-center justify-content-center">
-      <div class="p-fluid">
-          <div class="field">
-              <input pInputText id="username" type="text" />
-          </div>
-          <div class="field">
-              <input pInputText id="password" type="password" />
-          </div>
-          <p-button label="Login"></p-button>
+<div class="container">
+  <p-card header="Únete a nuestra comunidad">
+    <div class="custom-card content">
+      <div class="flex align-items-center justify-content-center custom-card content image">
+        <img src="../../../../assets/images/logo-recortado.jpg" height="200"/>
       </div>
-  </div>
-  <div class="col-2">
-      <p-divider layout="vertical">
-          <b>OR</b>
-      </p-divider>
-  </div>
-  <div class="col-5 flex align-items-center justify-content-center">
-      <p-button label="Sign Up" icon="pi pi-user-plus" styleClass="p-button-success"></p-button>
-  </div>
+      <div class="flex align-items-center justify-content-center custom-card content form">
+        <form>
+          <div class="custom-card content form input-group"> 
+            <span class="p-input-icon-left">
+              <i class="pi pi-user"></i>
+              <input type="text" placeholder="Nombre" pInputText/>
+            </span>
+          </div>
+          <div class="custom-card content form input-group"> 
+            <span class="p-input-icon-left">
+              <i class="pi pi-user"></i>
+              <input type="text" placeholder="Apellido" pInputText/>
+            </span>
+          </div>
+          <div class="custom-card content form input-group">
+            <span class="p-input-icon-left">
+              <i class="pi pi-phone"></i>
+              <input type="text" placeholder="Telefono" pInputText/>
+            </span>
+          </div>
+          <div class="custom-card content form input-group">
+            <span class="p-input-icon-left">
+              <i class="pi pi-envelope"></i>
+              <input type="email" placeholder="Correo electrónico" pInputText>
+            </span>
+          </div>
+          <div class="custom-card content form input-group">
+            <span class="p-input-icon-left">
+              <i class="pi pi-lock"></i>
+              <input type="password" placeholder="Contraseña" pInputText>
+            </span>
+          </div>
+          <p-button label="Registrarse"></p-button>
+        </form>
+      </div>
+      <div class="flex align-items-center justify-content-center custom-card content link">
+        <a routerLink="/login">¿Ya tienes una cuenta? Inicia sesión aquí</a>
+      </div>
+    </div>
+  </p-card>
 </div>

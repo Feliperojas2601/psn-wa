@@ -7,7 +7,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
 import { MenubarModule } from 'primeng/menubar';
 
-
 @NgModule({
   declarations: [],
   imports: [
