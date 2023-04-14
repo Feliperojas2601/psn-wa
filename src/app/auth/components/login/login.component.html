@@ -1,22 +1,32 @@
-
-<div class="grid">
-  <div class="col-5 flex align-items-center justify-content-center">
-      <div class="p-fluid">
-          <div class="field">
-              <input pInputText id="username" type="text" />
-          </div>
-          <div class="field">
-              <input pInputText id="password" type="password" />
-          </div>
-          <p-button label="Login"></p-button>
+<div class="container">
+    <p-card header="Inicia sesión">
+      <div class="custom-card content">
+        <div class="flex align-items-center justify-content-center custom-card content image">
+          <img src="../../../../assets/images/logo-recortado.jpg" height="200"/>
+        </div>
+        <div class="flex align-items-center justify-content-center custom-card content form">
+          <form>
+            <div class="custom-card content form input-group">
+              <span class="p-input-icon-left">
+                <i class="pi pi-envelope"></i>
+                <input type="email" placeholder="Correo electrónico" pInputText>
+              </span>
+            </div>
+            <div class="custom-card content form input-group">
+              <span class="p-input-icon-left">
+                <i class="pi pi-lock"></i>
+                <input type="password" placeholder="Contraseña" pInputText>
+              </span>
+            </div>
+            <p-button label="Ingresa"></p-button>
+          </form>
+        </div>
+        <div class="flex align-items-center justify-content-center custom-card content link">
+          <a routerLink="/register">¿No tienes una cuenta? Registrate aquí</a>
+        </div>
+        <div class="flex align-items-center justify-content-center custom-card content link">
+          <a routerLink="/reset-password">¿Olvidaste tu contraseña? Ingresa aquí</a>
+        </div>
       </div>
+    </p-card>
   </div>
-  <div class="col-2">
-      <p-divider layout="vertical">
-          <b>OR</b>
-      </p-divider>
-  </div>
-  <div class="col-5 flex align-items-center justify-content-center">
-      <p-button label="Sign Up" icon="pi pi-user-plus" styleClass="p-button-success"></p-button>
-  </div>
-</div>

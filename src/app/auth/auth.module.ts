@@ -3,13 +3,19 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SharedModule } from '../shared/shared.module';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { VerifyTokenComponent } from './components/verify-token/verify-token.component';
+import { ResetPasswordConfirmedComponent } from './components/reset-password-confirmed/reset-password-confirmed.component';
 
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ResetPasswordComponent,
+    VerifyTokenComponent,
+    ResetPasswordConfirmedComponent
   ],
   imports: [
     CommonModule,
