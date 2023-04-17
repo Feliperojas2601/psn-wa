@@ -5,6 +5,12 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
+import { GraphQLModule } from './graphql.module';
+import { HttpClientModule } from '@angular/common/http';
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { InMemoryCache } from '@apollo/client/core';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -15,9 +21,23 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule, 
     AuthModule, 
     PagesModule, 
-    SharedModule
+    SharedModule, 
+    GraphQLModule, 
+    HttpClientModule, 
+    ApolloModule
   ],
-  providers: [],
+  providers: [{
+    provide: APOLLO_OPTIONS,
+    useFactory(httpLink: HttpLink) {
+      return {
+        cache: new InMemoryCache(),
+        link: httpLink.create({
+          uri: environment.baseUrl,
+        }),
+      };
+    },
+    deps: [HttpLink],
+  },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
