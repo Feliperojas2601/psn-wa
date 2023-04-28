@@ -14,4 +14,8 @@ export class JwtService {
   public getUserId(): string {
     return '';
   }
+
+  public getToken(): string {
+    return '';
+  }
 }

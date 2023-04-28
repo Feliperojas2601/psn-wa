@@ -1,10 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { VerifyTokenForm } from '../../interfaces/verify-token-form.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-verify-token',
   templateUrl: './verify-token.component.html',
-  styleUrls: ['./verify-token.component.css']
+  styleUrls: ['./verify-token.component.css'], 
+  encapsulation: ViewEncapsulation.None
 })
-export class VerifyTokenComponent {
+export class VerifyTokenComponent implements OnInit {
+
+  public verifyTokenForm!: FormGroup;
+  public token!: string;
+  public verifyTokenFormValue!: VerifyTokenForm; 
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe( ({ token }) => this.token = token );
+    this.verifyTokenForm = this.fb.group({
+      token: [this.token, Validators.required],
+    });
+  }
+
+  public verifyToken(): void {
+    this.verifyTokenFormValue = this.verifyTokenForm.value as VerifyTokenForm;
+    this.authService.verifyToken( this.verifyTokenFormValue )
+    .subscribe( resp => {
+      this.router.navigate(['/login']);
+    }, (err) => {
+      Swal.fire('Error', err.error.msg, 'error' );
+    });
+  }
 
 }

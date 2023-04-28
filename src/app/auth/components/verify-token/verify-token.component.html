@@ -5,14 +5,14 @@
         <img src="../../../../assets/images/logo-recortado.jpg" height="200"/>
       </div>
       <div class="flex align-items-center justify-content-center custom-card content form">
-        <form>
+        <form [formGroup]="verifyTokenForm" (ngSubmit)="verifyToken()">
           <div class="custom-card content form input-group">
             <span class="p-input-icon-left">
               <i class="pi pi-info-circle"></i>
-              <input type="text" placeholder="Token" pInputText>
+              <input type="text" placeholder="Token" formControlName="token" pInputText>
             </span>
           </div>
-          <p-button label="Verificar"></p-button>
+          <p-button label="Verificar" type="submit" [disabled]="!this.verifyTokenForm.valid"></p-button>
         </form>
       </div>
       <div class="flex align-items-center justify-content-center custom-card content link">

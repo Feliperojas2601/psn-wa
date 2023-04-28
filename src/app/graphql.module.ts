@@ -1,12 +1,37 @@
-import {NgModule} from '@angular/core';
-import {ApolloModule, APOLLO_OPTIONS} from 'apollo-angular';
-import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
-import {HttpLink} from 'apollo-angular/http';
+import { NgModule } from '@angular/core';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloClientOptions, ApolloLink, InMemoryCache } from '@apollo/client/core';
+import { HttpLink } from 'apollo-angular/http';
+import { setContext } from '@apollo/client/link/context'
+import { JwtService } from './auth/services/jwt.service'
+import { environment } from '../environments/environment'
 
-const uri = ''; // <-- add the URL of the GraphQL server here
-export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
+const uri = environment.baseUrl;
+
+export function createApollo(http_link: HttpLink, jwt_service: JwtService): ApolloClientOptions<any> {
+  const basic = setContext(() => ({
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  }));
+  const auth = setContext(() => {
+    const token = jwt_service.getToken();
+    if (token === null) {
+      return {};
+    }
+    return {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  })
+  const link = ApolloLink.from([
+    basic,
+    auth,
+    http_link.create({ uri })
+  ])
   return {
-    link: httpLink.create({uri}),
+    link,
     cache: new InMemoryCache(),
   };
 }
@@ -17,8 +42,9 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
-      deps: [HttpLink],
+      deps: [HttpLink, JwtService],
     },
   ],
 })
-export class GraphQLModule {}
+export class GraphQLModule {
+}

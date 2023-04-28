@@ -6,7 +6,7 @@ import { VerifyTokenForm } from '../interfaces/verify-token-form.interface';
 import { ResetPasswordConfirmedForm } from '../interfaces/reset-password-confirmed-form.interface';
 import { JwtService } from './jwt.service';
 import { Apollo, gql, MutationResult } from 'apollo-angular';
-import { ApolloQueryResult } from '@apollo/client';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class AuthService {
           $name: String!,
           $lastName: String!,
           $phoneNumber: String!,
-          $notificationsEnabled: Boolean!, 
+          $notificationsEnable: Boolean!, 
           $profilePicture: String!,
           $profileType: String!
         ) {
@@ -37,12 +37,10 @@ export class AuthService {
             name: $name,
             lastName: $lastName,
             phoneNumber: $phoneNumber,
-            notificationsEnabled: $notificationsEnabled,
+            notificationsEnable: $notificationsEnable,
             profilePicture: $profilePicture,
             profileType: $profileType
-          }) {
-            id
-          }
+          }) 
         }
     `;
     return this.apollo.mutate({
@@ -53,7 +51,7 @@ export class AuthService {
         name: registerForm.name,
         lastName: registerForm.surname,
         phoneNumber: registerForm.phone,
-        notificationsEnabled: true,
+        notificationsEnable: true,
         profilePicture: "",
         profileType: "PUBLIC"
       }

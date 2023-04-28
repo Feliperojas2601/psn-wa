@@ -5,38 +5,38 @@
         <img src="../../../../assets/images/logo-recortado.jpg" height="200"/>
       </div>
       <div class="flex align-items-center justify-content-center custom-card content form">
-        <form>
+        <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
           <div class="custom-card content form input-group"> 
             <span class="p-input-icon-left">
               <i class="pi pi-user"></i>
-              <input type="text" placeholder="Nombre" pInputText/>
+              <input type="text" placeholder="Nombre" formControlName="name" pInputText/>
             </span>
           </div>
           <div class="custom-card content form input-group"> 
             <span class="p-input-icon-left">
               <i class="pi pi-user"></i>
-              <input type="text" placeholder="Apellido" pInputText/>
+              <input type="text" placeholder="Apellido" formControlName="surname" pInputText/>
             </span>
           </div>
           <div class="custom-card content form input-group">
             <span class="p-input-icon-left">
               <i class="pi pi-phone"></i>
-              <input type="text" placeholder="Telefono" pInputText/>
+              <input type="text" placeholder="Telefono" formControlName="phone" pInputText/>
             </span>
           </div>
           <div class="custom-card content form input-group">
             <span class="p-input-icon-left">
               <i class="pi pi-envelope"></i>
-              <input type="email" placeholder="Correo electrónico" pInputText>
+              <input type="email" placeholder="Correo electrónico" formControlName="email" pInputText>
             </span>
           </div>
           <div class="custom-card content form input-group">
             <span class="p-input-icon-left">
               <i class="pi pi-lock"></i>
-              <input type="password" placeholder="Contraseña" pInputText>
+              <input type="password" placeholder="Contraseña" formControlName="password" pInputText>
             </span>
           </div>
-          <p-button label="Registrarse"></p-button>
+          <p-button label="Registrarse" type="submit" [disabled]="!this.registerForm.valid"></p-button>
         </form>
       </div>
       <div class="flex align-items-center justify-content-center custom-card content link">

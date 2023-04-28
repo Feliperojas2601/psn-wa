@@ -12,7 +12,7 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'reset-password-confirmed', component: ResetPasswordConfirmedComponent },
-    { path: 'verify-token', component: VerifyTokenComponent},
+    { path: 'verify-token/:token', component: VerifyTokenComponent},
 ];
 
 @NgModule({
