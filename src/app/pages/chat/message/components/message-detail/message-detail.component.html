@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="message-container" [ngClass]="{ 'user-message': isUser, 'message-mine': isUser }">
+  <div class="message-container" [ngClass]="{ 'message-mine': isUser }">
     <div class="message-details">
       <ng-container *ngIf="!isUser">
         <span class="message-author p-text-bold">{{ message.userId }}</span>

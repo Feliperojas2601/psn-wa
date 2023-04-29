@@ -1,0 +1,19 @@
+.p-button {
+    background-color: var(--tertiary-color);
+    background: var(--tertiary-color);
+    border: 1px solid var(--tertiary-color);
+    display: block;
+    margin: 0 auto;
+}
+  
+.p-button:enabled:hover {
+    background-color: var(--tertiary-color);
+    background: var(--tertiary-color);
+    border: 1px solid var(--tertiary-color);
+}
+  
+.p-button:enabled:active {
+    background-color: var(--tertiary-color);
+    background: var(--tertiary-color);
+    border: 1px solid var(--tertiary-color);
+}

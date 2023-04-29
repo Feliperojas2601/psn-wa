@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { VerifyTokenForm } from '../interfaces/verify-token-form.interface';
@@ -13,11 +13,12 @@ import { ApolloQueryResult } from '@apollo/client/core';
 })
 export class AuthService {
 
+  public userId!: number; 
+
   constructor(
     private readonly apollo: Apollo,
     private readonly jwtService: JwtService,
-  ) {
-  }
+  ) {}
 
   public registerUser(registerForm: RegisterForm): Observable<MutationResult> {
     const REGISTER_USER = gql`
@@ -124,7 +125,7 @@ export class AuthService {
     }).valueChanges
   }
 
-  public resetPassword(resetPasswordConfirmedForm: ResetPasswordConfirmedForm) {
+  public resetPassword(resetPasswordConfirmedForm: ResetPasswordConfirmedForm): Observable<MutationResult> {
     const RESET_PASSWORD = gql`
         mutation changePassword(
           $id: Int!,
@@ -148,16 +149,48 @@ export class AuthService {
     })
   }
 
-  public async logout() {
-    //Remove from local storage and reset store
+  public refreshToken(): Observable<boolean> {
+    const REFRESH_TOKEN = gql`
+        mutation refreshToken {
+          refreshToken{
+            access_token
+            refresh_token
+          } 
+        }
+    `;
+    return this.apollo.mutate({
+      mutation: REFRESH_TOKEN
+    }).pipe(
+      map( (resp: any) => {
+        this.userId = this.jwtService.decodeJwtUserId(resp.access_token); 
+        this.setLocalStorage(resp.access_token, resp.refresh_token);
+        return true;
+      }),
+      catchError( (_error: any) => of(false) )
+    );
+  }
+
+  public setLocalStorage(jwtpsn: string, jwtrefreshpsn: string): void {
+    this.jwtService.setLocalStorage(jwtpsn, jwtrefreshpsn);
+  }
+
+  public async logout(): Promise<void> {
+    this.jwtService.removeLocalStorage();
     await this.apollo.client.resetStore();
   }
 
-  public isUserAuthenticated() {
-    return this.jwtService.isUserAuthenticated();
+  public isUserAuthenticated(): boolean {
+    let response: boolean = false; 
+    this.refreshToken().subscribe(
+      {
+        next: (resp: boolean) => response = resp, 
+        error: (_err: any) => response = false 
+      }
+    )
+    return response;
   }
 
-  public getUserId(): string {
-    return this.jwtService.getUserId();
+  public getUserId(): number {
+    return this.userId;
   }
 }

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-menubar',
   templateUrl: './menubar.component.html',
-  styleUrls: ['./menubar.component.css']
+  styleUrls: ['./menubar.component.css'], 
+  encapsulation: ViewEncapsulation.None
 })
 export class MenubarComponent {
   public items: MenuItem[] = [

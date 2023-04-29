@@ -8,14 +8,14 @@ import { environment } from '../environments/environment'
 
 const uri = environment.baseUrl;
 
-export function createApollo(http_link: HttpLink, jwt_service: JwtService): ApolloClientOptions<any> {
+export function createApollo(httpLink: HttpLink, jwtService: JwtService): ApolloClientOptions<any> {
   const basic = setContext(() => ({
     headers: {
       'Content-Type': 'application/json',
     }
   }));
   const auth = setContext(() => {
-    const token = jwt_service.getToken();
+    const token = jwtService.getToken();
     if (token === null) {
       return {};
     }
@@ -28,7 +28,7 @@ export function createApollo(http_link: HttpLink, jwt_service: JwtService): Apol
   const link = ApolloLink.from([
     basic,
     auth,
-    http_link.create({ uri })
+    httpLink.create({ uri })
   ])
   return {
     link,

@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Conversation } from '../../models/conversation.model';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-conversation-list',
   templateUrl: './conversation-list.component.html',
-  styleUrls: ['./conversation-list.component.css']
+  styleUrls: ['./conversation-list.component.css'], 
+  encapsulation: ViewEncapsulation.None
 })
 export class ConversationListComponent {
 

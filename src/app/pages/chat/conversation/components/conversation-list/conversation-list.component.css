@@ -1,3 +1,53 @@
 .header{
-  color: var(--blue-500);
+  color: var(--tertiary-color);
+}
+
+.p-button.p-button-info,
+.p-button-rounded.p-button-info {
+  background-color: var(--tertiary-color);
+  background: var(--tertiary-color);
+  border: 1px solid var(--tertiary-color);
+  display: block;
+  margin: 0 auto;
+}
+
+.p-button:enabled:hover.p-button-info,
+.p-button-rounded:enabled:hover.p-button-info {
+  background-color: var(--tertiary-color);
+  background: var(--tertiary-color);
+  border: 1px solid var(--tertiary-color);
+}
+
+.p-button:enabled:active.p-button-info,
+.p-button-rounded:enabled:active.p-button-info {
+  background-color: var(--tertiary-color);
+  background: var(--tertiary-color);
+  border: 1px solid var(--tertiary-color);
+}
+
+.header{
+  color: var(--tertiary-color);
+}
+
+.p-button.p-button-danger,
+.p-button-rounded.p-button-danger {
+  background-color: var(--secondary-color);
+  background: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  display: block;
+  margin: 0 auto;
+}
+
+.p-button:enabled:hover.p-button-danger,
+.p-button-rounded:enabled:hover.p-button-danger {
+  background-color: var(--secondary-color);
+  background: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+.p-button:enabled:active.p-button-danger,
+.p-button-rounded:enabled:active.p-button-danger {
+  background-color: var(--secondary-color);
+  background: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
 }

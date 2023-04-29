@@ -31,10 +31,11 @@ export class RegisterComponent implements OnInit {
   public registerUser(): void {
     this.registerFormValue = this.registerForm.value as RegisterForm;;
     this.authService.registerUser( this.registerFormValue )
-    .subscribe( resp => {
-      this.router.navigate(['/verify-token']);
-    }, (err) => {
-      Swal.fire('Error', err.error.msg, 'error' );
-    });
+    .subscribe(
+      {
+        next: (_resp : any) => this.router.navigate(['/verify-token']), 
+        error: (err : any) => Swal.fire('Error', err.error.msg, 'error' )
+      }
+    ); 
   }
 }

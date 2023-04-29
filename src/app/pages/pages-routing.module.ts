@@ -8,7 +8,6 @@ const routes: Routes = [
         path: 'psn', 
         component: PagesComponent,
         canActivate: [ AuthGuard ],
-        canLoad: [ AuthGuard ],
         children: [
             { 
                 path: '', // redirige a /psn/chat

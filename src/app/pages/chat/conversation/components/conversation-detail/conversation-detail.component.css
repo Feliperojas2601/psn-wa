@@ -19,21 +19,21 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: var(--blue-300);
+  background-color: var(--tertiary-color);
   color: #fff;
   border: none;
   cursor: pointer;
 }
 
 .header{
-  color: var(--blue-500);
+  color: var(--tertiary-color);
 }
 
 .messages-container {
   flex-grow: 1;
   overflow-y: scroll;
   padding: 10px;
-  height: calc(100vh - 220px); /* Restar la altura del mensaje de entrada */
+  height: calc(100vh - 250px); /* Restar la altura del mensaje de entrada */
 }
 
 .messages-list {
@@ -54,7 +54,7 @@
 }
 
 .message-input-container input {
-  width: calc(100% - 90px); /* Restar la anchura del botón de enviar */
+  width: calc(100% - 160px); /* Restar la anchura del botón de enviar */
   height: 40px;
   margin-right: 10px;
   border: none;
@@ -66,7 +66,7 @@
   height: 40px;
   border-radius: 20px;
   border: none;
-  background-color: var(--blue-400);
+  background-color: var(--tertiary-color);
   color: #fff;
   font-weight: bold;
 }

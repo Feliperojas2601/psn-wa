@@ -10,7 +10,7 @@
 }
 
 .card-header {
-  background-color: var(--blue-500);
+  background-color: var(--tertiary-color);
   color: #fff;
   border-radius: 5px 5px 0 0;
   padding: 20px;
@@ -22,13 +22,13 @@
 
 .card-footer {
   border-top: none;
-  background-color: #e4f0ff;
+  background-color: var(--secondary-color);
   border-radius: 0 0 5px 5px;
   padding: 20px;
 }
 
 .btn-psn {
-  background-color: var(--blue-500);
+  background-color: var(--tertiary-color);
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -40,6 +40,6 @@
 }
 
 .btn-psn:hover {
-  background-color: var(--blue-700);
+  background-color: var(--tertiary-color);
   cursor: pointer;
 }

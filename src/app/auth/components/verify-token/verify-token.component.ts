@@ -14,14 +14,20 @@ import Swal from 'sweetalert2';
 export class VerifyTokenComponent implements OnInit {
 
   public verifyTokenForm!: FormGroup;
+  public id!: number; 
   public token!: string;
   public verifyTokenFormValue!: VerifyTokenForm; 
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe( ({ token }) => this.token = token );
+    this.activatedRoute.params.subscribe( ({ token, id }) => {
+      this.token = token; 
+      this.id = id;  
+    });
+
     this.verifyTokenForm = this.fb.group({
+      id: [this.id],
       token: [this.token, Validators.required],
     });
   }
@@ -29,11 +35,12 @@ export class VerifyTokenComponent implements OnInit {
   public verifyToken(): void {
     this.verifyTokenFormValue = this.verifyTokenForm.value as VerifyTokenForm;
     this.authService.verifyToken( this.verifyTokenFormValue )
-    .subscribe( resp => {
-      this.router.navigate(['/login']);
-    }, (err) => {
-      Swal.fire('Error', err.error.msg, 'error' );
-    });
+    .subscribe(
+      {
+        next: (_resp : any) => this.router.navigate(['/login']), 
+        error: (err : any) => Swal.fire('Error', err.error.msg, 'error' )
+      }
+    ); 
   }
 
 }
