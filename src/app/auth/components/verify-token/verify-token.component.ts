@@ -23,8 +23,10 @@ export class VerifyTokenComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( ({ token, id }) => {
       this.token = token; 
-      this.id = id;  
+      this.id = parseInt(id);  
     });
+
+
 
     this.verifyTokenForm = this.fb.group({
       id: [this.id],

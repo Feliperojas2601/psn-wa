@@ -11,8 +11,8 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
-    { path: 'reset-password-confirmed', component: ResetPasswordConfirmedComponent },
-    { path: 'verify-token/:token', component: VerifyTokenComponent},
+    { path: 'reset-password-confirmed/:code/:id', component: ResetPasswordConfirmedComponent },
+    { path: 'verify-token/:token/:id', component: VerifyTokenComponent},
 ];
 
 @NgModule({

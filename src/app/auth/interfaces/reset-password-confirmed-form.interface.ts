@@ -1,5 +1,5 @@
 export interface ResetPasswordConfirmedForm {
   id: string;
-  token: string; 
-  password: string;  
+  code: string; 
+  newPassword: string;  
 }

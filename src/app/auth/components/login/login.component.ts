@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     .subscribe(
       {
         next: ({data}) => {
-          this.authService.setLocalStorage(data.access_token, data.refresh_token); 
+          this.authService.setLocalStorage(data.login.access_token, data.login.refresh_token); 
           this.router.navigate(['/psn']);
         }, 
         error: (err) => {

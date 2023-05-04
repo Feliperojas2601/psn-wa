@@ -1,5 +1,4 @@
 export class Notification {
-  public id: string;
   public title: string;
   public content: string; 
   public actorId: number; 
@@ -7,8 +6,7 @@ export class Notification {
   public createDate: Date;
   public type: string;
 
-  constructor(id: string, title:string, content: string, actorId: number, notifierId: number, createdDate: Date, type: string) {
-    this.id = id;
+  constructor(title:string, content: string, actorId: number, notifierId: number, createdDate: Date, type: string) {
     this.title = title;
     this.content = content;
     this.actorId = actorId;

@@ -62,8 +62,8 @@ export class AuthService {
   public loginUser(loginForm: LoginForm): Observable<MutationResult> {
     const LOGIN_USER = gql`
         mutation login(
-          $email: String
-          $password: String
+          $email: String!
+          $password: String!
         ){
           login(
             credentials: {
@@ -71,7 +71,6 @@ export class AuthService {
               password: $password
             }
           ) {
-            id
             access_token
             refresh_token
           }
@@ -130,12 +129,12 @@ export class AuthService {
         mutation changePassword(
           $id: Int!,
           $code: String!,
-          $password: String!
+          $newPassword: String!
         ) {
-          resetPassword(
+          changePassword(
             id: $id,
             code: $code, 
-            password: $password
+            newPassword: $newPassword
           )
         }
     `;
@@ -143,8 +142,8 @@ export class AuthService {
       mutation: RESET_PASSWORD,
       variables: {
         id: resetPasswordConfirmedForm.id,
-        token: resetPasswordConfirmedForm.token,
-        password: resetPasswordConfirmedForm.password,
+        code: resetPasswordConfirmedForm.code,
+        newPassword: resetPasswordConfirmedForm.newPassword,
       }
     })
   }

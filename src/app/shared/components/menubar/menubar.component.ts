@@ -1,5 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { subscribe } from 'graphql';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-menubar',
@@ -29,5 +32,20 @@ export class MenubarComponent {
       icon: 'pi pi-user',
       routerLink: ['/psn/user']
     }, 
-  ]
+    {
+      label: 'Logout',
+      icon: 'pi pi-sign-out',
+      command: () => this.logout()
+    }
+  ]; 
+
+  constructor(private authService: AuthService, private router: Router) {}
+
+  public logout(): void {
+    this.authService.logout().then(
+      () => {
+        this.router.navigate(['/login']);
+      }
+    );
+  }
 }

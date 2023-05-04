@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
     this.authService.registerUser( this.registerFormValue )
     .subscribe(
       {
-        next: (_resp : any) => this.router.navigate(['/verify-token']), 
+        next: (_resp : any) => this.router.navigate(['/login']), 
         error: (err : any) => Swal.fire('Error', err.error.msg, 'error' )
       }
     ); 

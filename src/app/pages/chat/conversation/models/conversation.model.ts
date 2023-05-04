@@ -1,11 +1,11 @@
 export class Conversation {
-  public id: string;
+  public _id: string;
   public createDate: Date;
   public updateDate: Date;
   public membersId: number[];
 
-  constructor(id: string, createdDate: Date, updatedDate: Date, membersId: number[]) {
-    this.id = id;
+  constructor(_id: string, createdDate: Date, updatedDate: Date, membersId: number[]) {
+    this._id = _id;
     this.createDate = createdDate;
     this.updateDate = updatedDate;
     this.membersId = membersId;

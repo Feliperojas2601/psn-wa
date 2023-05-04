@@ -14,6 +14,7 @@ export class ResetPasswordComponent implements OnInit {
 
   public resetPasswordForm!: FormGroup; 
   public resetPasswordFormValue!: string; 
+  public email!: string;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
@@ -24,12 +25,12 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   public requestResetPassword(): void {
-    this.resetPasswordFormValue = this.resetPasswordForm.value as string;
+    this.resetPasswordFormValue = this.resetPasswordForm.value.email as string;
     this.authService.requestResetPassword( this.resetPasswordFormValue )
     .subscribe(
       {
         next: (_resp : any) => this.router.navigate(['/login']), 
-        error: (err : any) => Swal.fire('Error', err.error.msg, 'error' )
+        error: (err : any) => Swal.fire('Error', err.error.msg, 'error')
       }
     ); 
   }
