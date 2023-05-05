@@ -24,19 +24,18 @@ export class NotificationsComponent {
         next: (resp: any) => {
           this.notifications = resp.data.getNotificationsByUser;
         }, 
-        error: (err: any) => Swal.fire('Error', err.error.msg, 'error')
+        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
     this.notificationsService.connectToNotificationSocket(this.authServices.getUserId());
     this.notificationsService.getNotificationsByUserSocket().subscribe({
       next: (resp: any) => {
-        console.log(resp)
         const notification: Notification = resp; 
         const previousNotifications: Notification[] = this.notifications;
         const newNotifications: Notification[] = [...previousNotifications, notification];
         this.notifications = newNotifications;
       },
-      error: (err: any) => Swal.fire('Error', err.error.msg, 'error')
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     }); 
   }
 }

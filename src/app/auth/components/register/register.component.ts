@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
     .subscribe(
       {
         next: (_resp : any) => this.router.navigate(['/login']), 
-        error: (err : any) => Swal.fire('Error', err.error.msg, 'error' )
+        error: (err : any) => Swal.fire('Error', err.toString(), 'error')
       }
     ); 
   }

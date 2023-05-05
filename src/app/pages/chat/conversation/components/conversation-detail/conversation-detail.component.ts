@@ -17,22 +17,41 @@ export class ConversationDetailComponent {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private messsageService: MessageService
+    private messageService: MessageService
   ) {}
   
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( ({ id }) => {
       this.id = id;  
     });
-    this.messsageService.getMessagesByConversation(this.id)
+    this.messageService.getMessagesByConversation(this.id)
     .subscribe(
       {
         next: (resp: any) => {
           this.messages = resp.data.getMessagesByConversation;
         }, 
-        error: (err: any) => Swal.fire('Error', err.error.msg, 'error')
+        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
+    this.messageService.connectToChatSocket(this.id);
+    this.messageService.getMessagesByConversationSocket().subscribe({
+      next: (resp: any) => {
+        const message: Message = resp; 
+        const previousMessages: Message[] = this.messages;
+        const newMessages: Message[] = [...previousMessages, message];
+        this.messages = newMessages;
+      },
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    }); 
+    this.messageService.getMessagesDeletedByConversationSocket().subscribe({
+      next: (resp: any) => {
+        const message= resp.id;
+        const newMessages = this.messages.filter(messageResp => messageResp.id !== message.id);
+        this.messages = newMessages;
+      },
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+    
   }
 
 }

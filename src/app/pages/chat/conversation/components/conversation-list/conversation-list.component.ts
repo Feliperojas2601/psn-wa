@@ -25,8 +25,9 @@ export class ConversationListComponent implements OnInit {
       {
         next: (resp: any) => {
           this.conversations = resp.data.getConversationsByUser;
+          console.log(this.conversations)
         }, 
-        error: (err: any) => Swal.fire('Error', err.error.msg, 'error')
+        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
   }
@@ -45,7 +46,7 @@ export class ConversationListComponent implements OnInit {
           this.conversations = this.conversations.filter((conversation: Conversation) => conversation._id != conversationId);
           Swal.fire('Success', 'Conversación eliminada', 'success');
         }, 
-        error: (err: any) => Swal.fire('Error', err.error.msg, 'error')
+        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
   }

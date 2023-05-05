@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/psn']);
         }, 
         error: (err : any) => {
-          Swal.fire('Error', err.error.msg, 'error' );
+          Swal.fire('Error', err.toString(), 'error');
         }
       }
     ); 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Apollo, gql } from 'apollo-angular';
-import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
+import { SocketNotification } from '../../pages.module';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class NotificationsService {
 
   constructor(
     private readonly apollo: Apollo,
-    private readonly socket: Socket,
+    private readonly socket: SocketNotification,
   ) { }
 
   public getNotificationsByUser(): Observable<ApolloQueryResult<any>> {

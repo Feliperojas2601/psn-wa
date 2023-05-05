@@ -19,7 +19,8 @@ export class ConversationService {
             _id, 
             createDate, 
             membersId, 
-            updateDate
+            updateDate, 
+            memberToName
           }
         }
     `;
