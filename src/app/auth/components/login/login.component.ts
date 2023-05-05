@@ -31,11 +31,10 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser( this.loginFormValue )
     .subscribe(
       {
-        next: ({data}) => {
-          this.authService.setLocalStorage(data.login.access_token, data.login.refresh_token); 
+        next: (_resp : any) => {
           this.router.navigate(['/psn']);
         }, 
-        error: (err) => {
+        error: (err : any) => {
           Swal.fire('Error', err.error.msg, 'error' );
         }
       }

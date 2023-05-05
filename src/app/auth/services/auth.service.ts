@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { VerifyTokenForm } from '../interfaces/verify-token-form.interface';
@@ -82,7 +82,14 @@ export class AuthService {
         email: loginForm.email,
         password: loginForm.password
       }
-    });
+    }).pipe(
+      tap(
+        ({data}: any) => {
+          this.jwtService.setSessionStorage(data.login.access_token, data.login.refresh_token);
+          this.userId = this.jwtService.decodeJwtUserId(data.login.access_token);
+        }
+      ),
+    );
   }
 
   public verifyToken(verifyTokenForm: VerifyTokenForm): Observable<MutationResult> {
@@ -148,46 +155,68 @@ export class AuthService {
     })
   }
 
-  public refreshToken(): Observable<boolean> {
-    const REFRESH_TOKEN = gql`
-        mutation refreshToken {
-          refreshToken{
-            access_token
-            refresh_token
-          } 
-        }
-    `;
-    return this.apollo.mutate({
-      mutation: REFRESH_TOKEN
-    }).pipe(
-      map( (resp: any) => {
-        this.userId = this.jwtService.decodeJwtUserId(resp.access_token); 
-        this.setLocalStorage(resp.access_token, resp.refresh_token);
-        return true;
-      }),
-      catchError( (_error: any) => of(false) )
-    );
-  }
-
-  public setLocalStorage(jwtpsn: string, jwtrefreshpsn: string): void {
-    this.jwtService.setLocalStorage(jwtpsn, jwtrefreshpsn);
+  public setSessionStorage(jwtpsn: string, jwtrefreshpsn: string): void {
+    this.jwtService.setSessionStorage(jwtpsn, jwtrefreshpsn);
   }
 
   public async logout(): Promise<void> {
-    this.jwtService.removeLocalStorage();
+    this.jwtService.removeSessionStorage();
     await this.apollo.client.resetStore();
   }
 
-  public isUserAuthenticated(): boolean {
-    let response: boolean = false; 
-    this.refreshToken().subscribe(
-      {
-        next: (resp: boolean) => response = resp, 
-        error: (_err: any) => response = false 
+  public refreshToken(refreshToken: string): Observable<MutationResult> {
+    const REFRESH_TOKEN = gql`
+      mutation refreshToken {
+        refreshToken {
+          access_token
+          refresh_token
+        } 
       }
-    )
-    return response;
+    `;
+    
+    const headers = {
+      Authorization: `Bearer ${refreshToken}`
+    };
+  
+    return this.apollo.mutate({
+      mutation: REFRESH_TOKEN,
+      context: {
+        headers: headers
+      }
+    }).pipe(
+      tap(({data}: any) => {
+        this.jwtService.setSessionStorage(data.refreshToken.access_token, data.refreshToken.refresh_token);
+        this.userId = this.jwtService.decodeJwtUserId(data.refreshToken.access_token);
+      })
+    );
+  }  
+
+  public isUserAuthenticated(): Observable<boolean> {
+    // Validate session storage access token is valid according to expiration date
+    const token = this.jwtService.getToken();
+    const refreshToken = this.jwtService.getRefreshToken();
+  
+    if (!token || token == '') {
+      return of(false);
+    }
+  
+    // If the token is not expired, return true
+    /*if (!this.jwtService.isTokenExpired(token)) {
+      return of(true);
+    }*/
+  
+    // If the token is expired, try to refresh it
+    return this.refreshToken(refreshToken).pipe(
+      map((_resp: any) => {
+        return true;
+      }),
+      catchError((_err: any) => {
+        return of(false);
+      })
+
+    );
   }
+  
 
   public getUserId(): number {
     return this.userId;

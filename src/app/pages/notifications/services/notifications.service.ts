@@ -34,7 +34,7 @@ export class NotificationsService {
 
   public connectToNotificationSocket(userId: number) {
     this.socket.connect();
-    this.socket.emit('JOIN_CONVERSATION', {userId: 3});
+    this.socket.emit('JOIN_CONVERSATION', {userId});
   }
 
   public getNotificationsByUserSocket(): Observable<any> {

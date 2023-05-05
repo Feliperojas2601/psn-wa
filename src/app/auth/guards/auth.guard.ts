@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CanLoad, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { Observable, catchError, map, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { JwtService } from '../services/jwt.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +9,23 @@ import { JwtService } from '../services/jwt.service';
 export class AuthGuard {
   constructor(private authService: AuthService, private router: Router){}
 
-  canActivate(
+  public canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.authService.isUserAuthenticated()) {
-      this.router.navigateByUrl('/login');
-      return false;
-    }
-    return true;
+    return this.authService.isUserAuthenticated().pipe(
+      map((isAuthenticated: boolean) => {
+        if (!isAuthenticated) {
+          this.router.navigateByUrl('/login');
+          return false;
+        }
+        return true;
+      }),
+      catchError(() => {
+        this.router.navigateByUrl('/login');
+        return of(false);
+      })
+    );
   }
+  
 }

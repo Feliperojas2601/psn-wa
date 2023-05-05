@@ -22,7 +22,6 @@ export class NotificationsComponent {
     .subscribe(
       {
         next: (resp: any) => {
-          console.log(resp);
           this.notifications = resp.data.getNotificationsByUser;
         }, 
         error: (err: any) => Swal.fire('Error', err.error.msg, 'error')

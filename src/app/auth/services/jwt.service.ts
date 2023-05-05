@@ -5,18 +5,22 @@ import { Injectable } from '@angular/core';
 })
 export class JwtService {
 
-  public setLocalStorage(jwtpsn: string, jwtrefreshpsn: string): void {
-    localStorage.setItem('jwtpsn', jwtpsn);
-    localStorage.setItem('jwtrefreshpsn', jwtrefreshpsn);
+  public setSessionStorage(jwtpsn: string, jwtrefreshpsn: string): void {
+    sessionStorage.setItem('jwtpsn', jwtpsn);
+    sessionStorage.setItem('jwtrefreshpsn', jwtrefreshpsn);
   }
 
-  public removeLocalStorage(): void {
-    localStorage.removeItem('jwtpsn');
-    localStorage.removeItem('jwtrefreshpsn');
+  public removeSessionStorage(): void {
+    sessionStorage.removeItem('jwtpsn');
+    sessionStorage.removeItem('jwtrefreshpsn');
   }
 
   public getToken(): string {
-    return localStorage.getItem('jwtpsn') || '';
+    return sessionStorage.getItem('jwtpsn') || '';
+  }
+
+  public getRefreshToken(): string {
+    return sessionStorage.getItem('jwtrefreshpsn') || '';
   }
 
   public decodeJwtUserId(jwt: string): number {
@@ -27,5 +31,9 @@ export class JwtService {
     const userInfo = token.payload.sub.split(",");
     const id = userInfo[1]; 
     return id; 
+  }
+
+  public isTokenExpired(jwt: string): boolean {
+    return false; 
   }
 }
