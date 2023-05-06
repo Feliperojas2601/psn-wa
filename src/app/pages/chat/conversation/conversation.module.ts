@@ -4,6 +4,7 @@ import { ConversationListComponent } from './components/conversation-list/conver
 import { ConversationDetailComponent } from './components/conversation-detail/conversation-detail.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MessageModule } from '../message/message.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { MessageModule } from '../message/message.module';
   imports: [
     CommonModule, 
     SharedModule, 
-    MessageModule
+    MessageModule, 
+    ReactiveFormsModule
   ]
 })
 export class ConversationModule { }

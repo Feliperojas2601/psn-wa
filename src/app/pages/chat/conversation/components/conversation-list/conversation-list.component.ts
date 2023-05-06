@@ -25,16 +25,15 @@ export class ConversationListComponent implements OnInit {
       {
         next: (resp: any) => {
           this.conversations = resp.data.getConversationsByUser;
-          console.log(this.conversations)
         }, 
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
   }
 
-  public navigateToConversation(_id: number): void {
+  public navigateToConversation(id: number, username: string): void {
     const currentUrl = this.router.url;
-    const newUrl = `${currentUrl}/${_id}`;
+    const newUrl = `${currentUrl}/${id}/${username}`;
     this.router.navigateByUrl(newUrl);
   }
 

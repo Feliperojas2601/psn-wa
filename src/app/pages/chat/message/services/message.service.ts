@@ -41,17 +41,32 @@ export class MessageService {
     }).valueChanges
   }
 
-  public connectToChatSocket(conversationId: string) {
+  public connectToChatSocket(userId: number, conversationId: string) {
     this.socket.connect();
-    this.socket.emit('JOIN_CONVERSATION', {conversationId});
+    const payload = {
+      userId, 
+      conversationId
+    };
+    this.socket.emit('JOIN_CONVERSATION', payload);
   }
 
-  public sendMessageSocket(message: Message) {
-    this.socket.emit('CREATE_MESSAGE', message);
+  public createMessageSocket(content:string, conversationId: string, userId: number) {
+    const payload = {
+      content,
+      userId,
+      conversationId,
+    };
+    this.socket.emit('CREATE_MESSAGE', payload);
   }
 
-  public deleteMessageSocket(messageId: string) {
-    this.socket.emit('DELETE_MESSAGE', {messageId});
+  public deleteMessageSocket(messageId: string, userId: number, conversationId: string) {
+    const payload = {
+      messageId,
+      userId, 
+      conversationId,
+    };
+    console.log(payload);
+    this.socket.emit('DELETE_MESSAGE', payload);
   }
 
   public getMessagesByConversationSocket(): Observable<any> {

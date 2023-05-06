@@ -15,7 +15,7 @@ const routes: Routes = [
         component: ConversationListComponent
       },
       { 
-        path: ':id', 
+        path: ':id/:username', 
         component:  ConversationDetailComponent
       }
     ]

@@ -3,20 +3,22 @@
     <button type="button" class="p-button p-button-icon p-mr-2" routerLink="/psn/chat">
       <i class="pi pi-arrow-left"></i>
     </button>
-    <h2 class="p-m-0 header">Tu conversación</h2>
+    <h2 class="p-m-0 header">Tu conversación con {{this.username}}</h2>
   </div>  
   <div class="p-grid">
     <div class="p-col-12">
       <div class="messages-container">
         <ul class="messages-list">
           <li class="message" *ngFor="let message of messages">
-            <app-message-detail [message]="message" [isUser]="message.active"></app-message-detail>
+            <app-message-detail [message]="message" [isUser]="message.isFromUser"></app-message-detail>
           </li>
         </ul>
       </div>
       <div class="message-input-container p-d-flex">
-        <input type="text" placeholder="Escribe tu mensaje aquí" class="p-inputtext p-d-block">
-        <button type="button" label="Enviar" class="p-button p-button-primary p-ml-2">Enviar</button>
+        <form [formGroup]="chatForm" (ngSubmit)="createMessage()">
+          <input type="text" placeholder="Escribe tu mensaje aquí" formControlName="content" pInputText>
+          <p-button type="submit" label="Enviar" [disabled]="!this.chatForm.valid"></p-button>
+        </form>
       </div>
     </div>
   </div>

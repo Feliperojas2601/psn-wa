@@ -2,12 +2,15 @@
   <div class="message-container" [ngClass]="{ 'message-mine': isUser }">
     <div class="message-details">
       <ng-container *ngIf="!isUser">
-        <span class="message-author p-text-bold">{{ message.userId }}</span>
+        <span class="message-author p-text-bold">{{ message.userFromName }}</span>
       </ng-container>      
       <span class="message-time">{{ message.createDate | date:'shortTime' }}</span>
     </div>
     <div class="message-content">
       {{ message.content }}
     </div>
+    <ng-container *ngIf="isUser">
+      <p-button label="Eliminar" (click)="deleteMessage()"></p-button>
+    </ng-container>  
   </div>
 </div>

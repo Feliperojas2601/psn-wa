@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Message } from '../../models/message.model';
+import { MessageService } from '../../services/message.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-message-detail',
@@ -10,4 +12,14 @@ import { Message } from '../../models/message.model';
 export class MessageDetailComponent {
   @Input() message!: Message;
   @Input() isUser!: boolean;
+
+  constructor(
+    private readonly messageService: MessageService,
+    private readonly authService: AuthService,
+  ) {}
+
+  public deleteMessage(): void {
+    console.log(this.message)
+    this.messageService.deleteMessageSocket(this.message._id, this.authService.getUserId() ,this.message.conversationId);
+  }
 }

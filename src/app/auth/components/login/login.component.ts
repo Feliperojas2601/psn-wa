@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   public loginUser(): void {
-    this.loginFormValue = this.loginForm.value as LoginForm;;
+    this.loginFormValue = this.loginForm.value as LoginForm;
     this.authService.loginUser( this.loginFormValue )
     .subscribe(
       {
