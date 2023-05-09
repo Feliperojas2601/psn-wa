@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AuthGuard } from '../auth//guards/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { PagesComponent } from './pages.component';
 
 const routes: Routes = [
@@ -22,6 +22,14 @@ const routes: Routes = [
                 path: 'notifications', 
                 loadChildren: () => import('./notifications/notifications-routing.module').then(m => m.NotificationsRoutingModule) 
             },
+            { 
+                path: 'userrs', 
+                loadChildren: () => import('./userrs/userrs-routing.module').then(m => m.UserrsRoutingModule) 
+            },
+            {
+                path: 'profile',
+                loadChildren: () => import('./user/user-routing.module').then(m => m.UserRoutingModule)
+            }
         ]
     },
 ];

@@ -20,17 +20,17 @@ export class ResetPasswordConfirmedComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit(): void {
-    this.activatedRoute.params.subscribe( ({ code, id }) => {
-      this.code = code; 
-      this.id = parseInt(id);  
-    });
-    this.resetPasswordConfirmedForm = this.fb.group({
-      id: [this.id],
-      code: [this.code, Validators.required],
-      newPassword: ['', Validators.required]
-    });
-  }
+    ngOnInit(): void {
+      this.activatedRoute.params.subscribe( ({ code, id }) => {
+        this.code = code; 
+        this.id = parseInt(id);  
+      });
+      this.resetPasswordConfirmedForm = this.fb.group({
+        id: [this.id],
+        code: [this.code, Validators.required],
+        newPassword: ['', Validators.required]
+      });
+   }
 
   public resetPassword(): void {
     this.resetPasswordConfirmedValue = this.resetPasswordConfirmedForm.value as ResetPasswordConfirmedForm;;

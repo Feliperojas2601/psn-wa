@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserrsComponent } from './userrs.component';
-import { BlockingModule } from './blocking/blocking.module';
-import { FollowUpModule } from './follow-up/follow-up.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { SearchModule } from './search/search.module';
-
-
+import { FriendsModule } from './friends/friends.module';
 
 @NgModule({
   declarations: [
@@ -13,9 +11,9 @@ import { SearchModule } from './search/search.module';
   ],
   imports: [
     CommonModule, 
-    BlockingModule,
-    FollowUpModule,
     SearchModule, 
+    FriendsModule, 
+    SharedModule,
   ]
 })
 export class UserrsModule { }

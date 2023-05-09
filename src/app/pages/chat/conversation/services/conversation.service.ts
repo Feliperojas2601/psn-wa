@@ -12,6 +12,25 @@ export class ConversationService {
     private readonly apollo: Apollo,
   ) { }
 
+  public createConversation(userId: number) : Observable<MutationResult> {
+    const CREATE_CONVERSATION = gql`
+        mutation createConversation($memberToId: Int!) {
+          createConversation(memberToId: $memberToId) {
+            _id,
+            createDate,
+            updateDate,
+            membersId
+          }
+        }
+    `;
+    return this.apollo.mutate({
+      mutation: CREATE_CONVERSATION,
+      variables: {
+        memberToId: userId
+      }
+    });
+  }
+
   public getConversationsByUser(): Observable<ApolloQueryResult<any>> {
     const GET_CONVERSATIONS_BY_USER = gql`
         query getConversationsByUser{

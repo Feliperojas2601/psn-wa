@@ -2,7 +2,9 @@
   margin-left: 10px;
   margin-right: 10px;
   padding: 10px;
-  background-color: var(--bluegray-50);
+  background-color: var(--secondary-color);
+  color: #fff;
+  
   border-radius: 5px;
 }
 
@@ -18,7 +20,7 @@
 
 .notification-time {
   font-size: 12px;
-  color: var(--bluegray-400);
+  color: #fff;;
   margin-left: auto;
 }
 

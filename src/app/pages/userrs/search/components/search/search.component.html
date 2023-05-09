@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="grid">
+    <div class="col-6">
+      <h2>Buscar usuarios</h2>
+      <form [formGroup]="searchForm" (ngSubmit)="searchUser()">
+        <div class="p-inputgroup">
+            <input type="text" pInputText formControlName="searchParam" placeholder="Buscar usuario">
+            <button type="submit" [disabled]="!this.searchForm.valid" pButton icon="pi pi-search"></button>
+        </div>
+      </form>
+      <div class="p-listbox mt-3">
+        <div class="p-listbox-header">Resultados de búsqueda</div>
+        <div class="p-listbox-list">
+          <div class="p-listbox-item" *ngFor="let user of searchedUsers">
+            <div class="mr-2">{{user}}</div>
+            <button type="button" pButton (click)="followUser(user)" label="Agregar"></button>
+          </div>
+        </div>
+      </div>
+      <div class="p-listbox mt-3">
+        <div class="p-listbox-header">
+          Búsquedas recientes
+          <button type="button" pButton icon="pi pi-trash" (click)="deleteRecentSearchedUsers()" ></button>
+        </div>
+        <div class="p-listbox-list">
+          <div class="p-listbox-item" *ngFor="let user of recentSearchedUsers">
+            <div class="mr-2">{{user}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="p-listbox mt-3">
+        <div class="p-listbox-header">Amigos sugeridos</div>
+        <div class="p-listbox-list">
+          <div class="p-listbox-item" *ngFor="let user of suggestedUsers">
+            <div class="mr-2">{{user}}</div>
+            <button type="button" pButton (click)="followUser(user)" label="Agregar"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 export class MenubarComponent {
   public items: MenuItem[] = [
     {
-      label: 'Posts',
+      label: 'Publicaciones',
       icon: 'pi pi-file',
       routerLink: ['/psn/posts']
     }, 
@@ -23,17 +23,22 @@ export class MenubarComponent {
       routerLink: ['/psn/chat']
     }, 
     {
-      label: 'Search',
+      label: 'Búsqueda',
       icon: 'pi pi-search',
-      routerLink: ['/psn/search']
+      routerLink: ['/psn/userrs/search']
     }, 
     {
-      label: 'User',
+      label: 'Usuario',
       icon: 'pi pi-user',
-      routerLink: ['/psn/user']
+      routerLink: ['/psn/profile']
     }, 
     {
-      label: 'Logout',
+      label: 'Amigos',
+      icon: 'pi pi-users',
+      routerLink: ['/psn/userrs/friends']
+    },
+    {
+      label: 'Salir',
       icon: 'pi pi-sign-out',
       command: () => this.logout()
     }

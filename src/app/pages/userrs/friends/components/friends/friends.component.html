@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="grid">
+    <div class="col-6">
+      <h2>Mis amigos</h2>
+      <div class="p-listbox mt-3">
+        <div class="p-listbox-header">Lista de amigos</div>
+        <div class="p-listbox-list">
+          <div class="p-listbox-item" *ngFor="let user of followedUsers">
+            <div class="mr-2">{{user}}</div>
+            <button type="button" pButton (click)="createConversation(user)" icon="pi pi-comment"></button>
+            <button type="button" pButton (click)="unFollowUser(user)" icon="pi pi-user-minus"></button>
+            <button type="button" pButton (click)="blockUser(user)" icon="pi pi-times"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <h2>Mis solicitudes</h2>
+      <div class="p-listbox mt-3">
+        <div class="p-listbox-header">Lista de solicitudes</div>
+        <div class="p-listbox-list">
+          <div class="p-listbox-item" *ngFor="let user of requestFollowedUsers">
+            <div class="mr-2">{{user}}</div>
+            <button type="button" pButton (click)="acceptFollowRequest(user)" icon="pi pi-check"></button>
+            <button type="button" pButton (click)="rejectFollowRequest(user)" icon="pi pi-times"></button>
+          </div>
+        </div>
+      </div>
+      <h2>Usuarios bloqueados</h2>
+      <div class="p-listbox mt-3">
+        <div class="p-listbox-header">Lista de bloqueados</div>
+        <div class="p-listbox-list">
+          <div class="p-listbox-item" *ngFor="let user of blockedUsers">
+            <div class="mr-2">{{user}}</div>
+            <button type="button" pButton (click)="unblockUser(user)" icon="pi pi-times"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

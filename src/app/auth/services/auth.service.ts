@@ -29,7 +29,6 @@ export class AuthService {
           $lastName: String!,
           $phoneNumber: String!,
           $notificationsEnable: Boolean!, 
-          $profilePicture: String!,
           $profileType: String!
         ) {
           registerUser(user: {
@@ -39,7 +38,6 @@ export class AuthService {
             lastName: $lastName,
             phoneNumber: $phoneNumber,
             notificationsEnable: $notificationsEnable,
-            profilePicture: $profilePicture,
             profileType: $profileType
           }) 
         }
@@ -53,7 +51,6 @@ export class AuthService {
         lastName: registerForm.surname,
         phoneNumber: registerForm.phone,
         notificationsEnable: true,
-        profilePicture: "",
         profileType: "PUBLIC"
       }
     });
@@ -160,8 +157,8 @@ export class AuthService {
   }
 
   public async logout(): Promise<void> {
-    this.jwtService.removeSessionStorage();
     await this.apollo.client.resetStore();
+    this.jwtService.removeSessionStorage();
   }
 
   public refreshToken(refreshToken: string): Observable<MutationResult> {
