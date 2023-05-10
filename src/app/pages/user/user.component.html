@@ -1,1 +1,53 @@
-<p>user works!</p>
+<div class="container">
+  <div class="profile-container">
+    <div class="profile-image">
+      <img [src]="profileImageUrl" alt="Profile Image">
+      <button (click)="changeProfileImage()">Cambiar foto</button>
+    </div>
+    <div class="profile-info">
+      <h2>Información de perfil</h2>
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+        <div>
+          <div class="grid-container">
+            <label>Role:</label>
+            <input type="text" placeholder="Rol" formControlName="role" pInputText>
+          </div>
+          <div class="grid-container">
+            <label>Email:</label>
+            <input type="email" placeholder="Email" formControlName="email" pInputText>
+          </div>
+          <div class="grid-container">
+            <label>Password:</label>
+            <input type="password" placeholder="Password" formControlName="password" pInputText>
+          </div>
+          <div class="grid-container">
+            <label>Name:</label>
+            <input type="text" placeholder="Nombre" formControlName="name" pInputText>
+          </div>
+          <div class="grid-container">
+            <label>Lastname:</label>
+            <input type="text" placeholder="Apellido" formControlName="lastName" pInputText>
+          </div>
+          <div class="grid-container">
+            <label>PhoneNumber:</label>
+            <input type="text" placeholder="Teléfono" formControlName="phoneNumber" pInputText>
+          </div>
+          <div class="grid-container">
+            <label>ProfileType:</label>
+            <input type="text" placeholder="profileType" formControlName="profileType" pInputText>
+          </div>
+          <div class="grid-container">
+            <label>ProfileUpdateDate:</label>
+            <input type="text" placeholder="ProfileUpdateDate" formControlName="profileUpdateDate" pInputText>
+          </div>
+          <div class="grid-container">
+            <label>NotificationsEnable:</label>
+            <input type="checkbox" formControlName="notificationsEnable" pCheckbox>
+          </div>
+        </div>
+        <p-button label="Submit" type="submit" [disabled]="!this.profileForm.valid"></p-button>
+      </form>
+    </div>
+  </div>
+</div>
+
