@@ -33,7 +33,10 @@ export class RegisterComponent implements OnInit {
     this.authService.registerUser( this.registerFormValue )
     .subscribe(
       {
-        next: (_resp : any) => this.router.navigate(['/login']), 
+        next: (_resp : any) => {
+          Swal.fire('Success', 'Registered successfully', 'success');
+          this.router.navigate(['/login'])
+        },
         error: (err : any) => Swal.fire('Error', err.toString(), 'error')
       }
     ); 

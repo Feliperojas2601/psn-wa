@@ -6,6 +6,7 @@ import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
 import { MenubarModule } from 'primeng/menubar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -17,6 +18,7 @@ import { MenubarModule } from 'primeng/menubar';
     InputTextModule,
     DataViewModule, 
     MenubarModule,
+    AutoCompleteModule,
   ], 
   exports: [
     CommonModule,
@@ -26,6 +28,7 @@ import { MenubarModule } from 'primeng/menubar';
     InputTextModule,
     DataViewModule,
     MenubarModule, 
+    AutoCompleteModule,
   ]
 })
 export class PrimengModule { }

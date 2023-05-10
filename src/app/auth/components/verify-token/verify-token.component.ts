@@ -39,7 +39,10 @@ export class VerifyTokenComponent implements OnInit {
     this.authService.verifyToken( this.verifyTokenFormValue )
     .subscribe(
       {
-        next: (_resp : any) => this.router.navigate(['/login']), 
+        next: (_resp : any) => {
+          Swal.fire('Success', 'Token verified successfully', 'success');
+          this.router.navigate(['/login']);
+        }, 
         error: (err : any) => Swal.fire('Error', err.toString(), 'error')
       }
     ); 
