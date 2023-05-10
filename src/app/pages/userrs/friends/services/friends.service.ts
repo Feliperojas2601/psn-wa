@@ -16,15 +16,10 @@ export class FriendsService {
     const GET_FOLLOWED_USERS = gql`
         query findAllFollowedUsers{
           findAllFollowedUsers{
-            Values{
-              Id
-              ElementId
-              Labels
-              Props {
-                id
-              }
-            }
-            Keys
+            id
+            email
+            name 
+            lastName
           }        
         }      
     `;
@@ -37,15 +32,10 @@ export class FriendsService {
     const GET_REQUEST_FOLLOWED_USERS = gql`
         query findAllFollowRequests{
           findAllFollowRequests{
-            Values{
-              Id
-              ElementId
-              Labels
-              Props {
-                id
-              }
-            }
-            Keys
+            id
+            email
+            name 
+            lastName
           }        
         }      
     `;
@@ -58,15 +48,10 @@ export class FriendsService {
     const GET_BLOCKED_USERS = gql`
         query findAllBlockedUsers{
           findAllBlockedUsers{
-            Values{
-              Id
-              ElementId
-              Labels
-              Props {
-                id
-              }
-            }
-            Keys
+            id
+            email
+            name 
+            lastName
           }        
         }      
     `;

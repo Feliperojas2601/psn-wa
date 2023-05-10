@@ -16,16 +16,11 @@ export class SearchService {
     const GET_ALL_SEARCHED_USERS = gql`
         query findAllSearchedUsers{
           findAllSearchedUsers{
-            Values{
-              Id
-              ElementId
-              Labels
-              Props {
-                id
-              }
-            }
-            Keys
-          }        
+            id
+            email
+            name 
+            lastName  
+          } 
         }
     `;
     return this.apollo.watchQuery({
@@ -37,15 +32,10 @@ export class SearchService {
     const GET_ALL_SUGGESTED_USERS = gql`
         query findAllSuggestedFriends{
           findAllSuggestedFriends{
-            Values{
-              Id
-              ElementId
-              Labels
-              Props {
-                id
-              }
-            }
-            Keys
+            id
+            email
+            name 
+            lastName
           }                
         }
     `;
@@ -79,7 +69,7 @@ export class SearchService {
     });
   }
 
-  public searchUser(searchedParam: string): Observable<MutationResult<any>> {
+  public searchUser(userId: number): Observable<MutationResult<any>> {
     const SEARCH_USER = gql`
         mutation searchUser ($idD: Int!) {
           searchUser(idD: $idD)    
@@ -88,8 +78,27 @@ export class SearchService {
     return this.apollo.mutate({
       mutation: SEARCH_USER,
       variables: {
-        idD: 4,
+        idD: userId,
       }
     });
+  }
+
+  public searchUsers(pattern: string): Observable<ApolloQueryResult<any>> {
+    const SEARCH_USERS = gql`
+        query searchUser($pattern: String!) {
+          searchUser(pattern: $pattern){
+            id
+            email
+            name 
+            lastName
+          }
+        }
+    `;
+    return this.apollo.watchQuery({
+      query: SEARCH_USERS,
+      variables: {
+        pattern,
+      }
+    }).valueChanges
   }
 }

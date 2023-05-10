@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
     .subscribe(
       {
         next: (_resp : any) => {
+          Swal.fire('Success', 'Logged in successfully', 'success');
           this.router.navigate(['/psn']);
         }, 
         error: (err : any) => {

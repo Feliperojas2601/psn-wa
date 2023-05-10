@@ -37,7 +37,10 @@ export class ResetPasswordConfirmedComponent implements OnInit {
     this.authService.resetPassword( this.resetPasswordConfirmedValue )
     .subscribe(
       {
-        next: (_resp : any) => this.router.navigate(['/login']), 
+        next: (_resp : any) => {
+          Swal.fire('Success', 'Password reset successfully', 'success');
+          this.router.navigate(['/login']);
+        }, 
         error: (err : any) => Swal.fire('Error', err.toString(), 'error')
       }
     ); 

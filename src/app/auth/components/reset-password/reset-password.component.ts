@@ -29,7 +29,10 @@ export class ResetPasswordComponent implements OnInit {
     this.authService.requestResetPassword( this.resetPasswordFormValue )
     .subscribe(
       {
-        next: (_resp : any) => this.router.navigate(['/login']), 
+        next: (_resp : any) => {
+          Swal.fire('Success', 'Reset password email sent successfully', 'success');
+          this.router.navigate(['/login']);
+        }, 
         error: (err : any) => Swal.fire('Error', err.toString(), 'error')
       }
     ); 
