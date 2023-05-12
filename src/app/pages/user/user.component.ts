@@ -53,6 +53,12 @@ export class UserComponent implements OnInit{
       profileUpdateDate: ['', Validators.required],
       profileType: ['PUBLIC', Validators.required],
     });
+    let roleFormControl = this.profileForm.get('role');
+    let profileUpdateDateFormControl = this.profileForm.get('profileUpdateDate');
+    if (roleFormControl != null && profileUpdateDateFormControl != null){
+      roleFormControl.disable();
+      profileUpdateDateFormControl.disable();
+    }
     
     this.activatedRoute.params.subscribe( ({ id }) => {
       this.id = Math.floor(id);
