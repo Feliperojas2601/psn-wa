@@ -26,7 +26,6 @@ export class UserComponent implements OnInit{
   public profileForm!: FormGroup;
   public user!: User;
   public id!: number;
-  public imageReloaded: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -89,15 +88,6 @@ export class UserComponent implements OnInit{
     this.userService.getProfilePicture(id).subscribe({
       next: (resp: any) => {
         this.profileImageUrl = resp.data.getProfilePicture;
-        /*if (reload) {
-          if (this.imageReloaded) {
-            this.profileImageUrl = this.profileImageUrl;
-          } else {
-            this.profileImageUrl = this.profileImageUrl + '?';
-          }
-          this.imageReloaded = !this.imageReloaded;
-          console.log(this.profileImageUrl);
-        }*/
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
