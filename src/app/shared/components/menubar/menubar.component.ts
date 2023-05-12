@@ -30,7 +30,7 @@ export class MenubarComponent {
     {
       label: 'Usuario',
       icon: 'pi pi-user',
-      routerLink: ['/psn/profile']
+      routerLink: ['/psn/profile', this.authService.getUserId()]
     }, 
     {
       label: 'Amigos',

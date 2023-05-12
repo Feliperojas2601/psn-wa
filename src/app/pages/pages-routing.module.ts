@@ -7,9 +7,9 @@ const routes: Routes = [
     { 
         path: 'psn', 
         component: PagesComponent,
-        //canActivate: [ AuthGuard ],
+        canActivate: [ AuthGuard ],
         children: [
-            { 
+            {
                 path: '', // redirige a /psn/chat
                 redirectTo: 'chat',
                 pathMatch: 'full'

@@ -1,8 +1,17 @@
 <div class="container">
   <div class="profile-container">
-    <div class="profile-image">
-      <img [src]="profileImageUrl" alt="Profile Image">
-      <button (click)="changeProfileImage()">Cambiar foto</button>
+    <div class="profile-image-container">
+      <div class="profile-image">
+        <img [src]="profileImageUrl" alt="Profile Image">
+      </div>
+      <p-button *ngIf="showButtonImage" class="change-image-button p-button-icon-only" (click)="changeProfileImage()">
+        <i class="pi pi-camera"></i>
+      </p-button> 
+      <div>
+      <p-dialog header="Subir imagen" [(visible)]="displayImageUploadDialog">
+        <p-fileUpload name="photo" url="{{profileImageUrlPost}}" accept="image/png" (onUpload)="handleUpload()"></p-fileUpload>
+      </p-dialog>
+    </div>
     </div>
     <div class="profile-info">
       <h2>Información de perfil</h2>
@@ -15,10 +24,6 @@
           <div class="grid-container">
             <label>Email:</label>
             <input type="email" placeholder="Email" formControlName="email" pInputText>
-          </div>
-          <div class="grid-container">
-            <label>Password:</label>
-            <input type="password" placeholder="Password" formControlName="password" pInputText>
           </div>
           <div class="grid-container">
             <label>Name:</label>
@@ -34,7 +39,7 @@
           </div>
           <div class="grid-container">
             <label>ProfileType:</label>
-            <input type="text" placeholder="profileType" formControlName="profileType" pInputText>
+            <p-dropdown [options]="profileTypeOptions" formControlName="profileType"></p-dropdown> 
           </div>
           <div class="grid-container">
             <label>ProfileUpdateDate:</label>
@@ -45,7 +50,7 @@
             <input type="checkbox" formControlName="notificationsEnable" pCheckbox>
           </div>
         </div>
-        <p-button label="Submit" type="submit" [disabled]="!this.profileForm.valid"></p-button>
+        <p-button *ngIf="showButtonSubmit" label="Submit" type="submit" [disabled]="!this.profileForm.valid"></p-button>
       </form>
     </div>
   </div>
