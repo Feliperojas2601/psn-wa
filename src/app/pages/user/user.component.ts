@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from './services/user.service';
-import { ProfileForm } from './profile-form.interface';
+import { ProfileForm } from './interfaces/profile-form.interface';
 import { ActivatedRoute } from '@angular/router';
 import { User} from './models/user.model'
 import { Router } from '@angular/router';
@@ -26,6 +26,7 @@ export class UserComponent implements OnInit{
   public profileForm!: FormGroup;
   public user!: User;
   public id!: number;
+  public imageReloaded: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -59,7 +60,7 @@ export class UserComponent implements OnInit{
     });
 
     this.showButtonImage = this.showButtonSubmit = this.authService.getUserId() == this.id;
-    this.loadProfilePicture(this.id);
+    this.loadProfilePicture(this.id, false);
     this.loadUserInfo(this.id);
 
   }
@@ -84,10 +85,19 @@ export class UserComponent implements OnInit{
     );
   }
 
-  private loadProfilePicture(id: number): void {
+  private loadProfilePicture(id: number, reload: boolean): void {
     this.userService.getProfilePicture(id).subscribe({
       next: (resp: any) => {
         this.profileImageUrl = resp.data.getProfilePicture;
+        /*if (reload) {
+          if (this.imageReloaded) {
+            this.profileImageUrl = this.profileImageUrl;
+          } else {
+            this.profileImageUrl = this.profileImageUrl + '?';
+          }
+          this.imageReloaded = !this.imageReloaded;
+          console.log(this.profileImageUrl);
+        }*/
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
@@ -107,19 +117,19 @@ export class UserComponent implements OnInit{
 
   public handleUpload(): void {
     this.displayImageUploadDialog = false;
-    this.profileImageUrl = '../../assets/images/logo.jpg';
-    this.loadProfilePicture(this.id);
+    this.loadProfilePicture(this.id, true);
+    Swal.fire('Éxito', "Datos guardados con éxito", 'success'); 
+    window.location.reload(); 
   }
 
   public updateProfile(): void {
     this.profileFormValue = this.profileForm.value as ProfileForm;
     this.userService.editUserById(this.id, this.profileFormValue).subscribe({
-      next: (resp: any) => {
+      next: (_resp: any) => {
         Swal.fire('Éxito', "Datos guardados con éxito", 'success')
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
   }
-
 }

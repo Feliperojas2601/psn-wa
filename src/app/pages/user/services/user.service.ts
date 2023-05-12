@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Apollo, MutationResult, gql } from 'apollo-angular';
-import { ProfileForm } from '../profile-form.interface';
+import { ProfileForm } from '../interfaces/profile-form.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({

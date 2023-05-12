@@ -1,9 +1,9 @@
 <div class="container">
   <div class="profile-container">
     <div class="profile-image-container">
-      <div class="profile-image">
-        <img [src]="profileImageUrl" alt="Profile Image">
-      </div>
+      <div class="profile-image" alt="Profile Image">
+        <img [src]="profileImageUrl"/>
+      </div>     
       <p-button *ngIf="showButtonImage" class="change-image-button p-button-icon-only" (click)="changeProfileImage()">
         <i class="pi pi-camera"></i>
       </p-button> 
