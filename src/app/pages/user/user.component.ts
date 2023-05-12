@@ -59,8 +59,8 @@ export class UserComponent implements OnInit{
     });
 
     this.showButtonImage = this.showButtonSubmit = this.authService.getUserId() == this.id;
-    this.loadUserInfo(this.id);
     this.loadProfilePicture(this.id);
+    this.loadUserInfo(this.id);
 
   }
 
@@ -86,13 +86,13 @@ export class UserComponent implements OnInit{
 
   private loadProfilePicture(id: number): void {
     this.userService.getProfilePicture(id).subscribe({
-        next: (resp: any) => {
-          this.profileImageUrl = resp.data.getProfilePicture;
-        },
-        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-      }
-    );
+      next: (resp: any) => {
+        this.profileImageUrl = resp.data.getProfilePicture;
+      },
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
   }
+  
 
   public changeProfileImage(): void {
     this.userService.changeProfilePicture().subscribe({
@@ -106,11 +106,9 @@ export class UserComponent implements OnInit{
   }
 
   public handleUpload(): void {
-    console.log("LLEGO AQUIIIII");
     this.displayImageUploadDialog = false;
-    this.profileImageUrl = this.profileImageUrlPost;
-    //this.loadProfilePicture(this.id);
-    this.profileImageUrl = this.profileImageUrl;
+    this.profileImageUrl = '../../assets/images/logo.jpg';
+    this.loadProfilePicture(this.id);
   }
 
   public updateProfile(): void {
