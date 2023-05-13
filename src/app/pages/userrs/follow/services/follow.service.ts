@@ -6,13 +6,13 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class FriendsService {
+export class FollowService {
 
   constructor(
     private readonly apollo: Apollo,
   ) { }
 
-  public getFriends(): Observable<ApolloQueryResult<any>> {
+  public getFollow(): Observable<ApolloQueryResult<any>> {
     const GET_FOLLOWED_USERS = gql`
         query findAllFollowedUsers{
           findAllFollowedUsers{

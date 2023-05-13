@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { SocketChat } from 'src/app/pages/pages.module';
-import { Message } from '../models/message.model';
+import { SocketChat } from '../../chat.module';
 
 @Injectable({
   providedIn: 'root'

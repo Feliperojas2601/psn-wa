@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserrsComponent } from './userrs.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SearchModule } from './search/search.module';
-import { FriendsModule } from './friends/friends.module';
+import { FollowModule } from './follow/follow.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +12,7 @@ import { FriendsModule } from './friends/friends.module';
   imports: [
     CommonModule, 
     SearchModule, 
-    FriendsModule, 
+    FollowModule, 
     SharedModule,
   ]
 })

@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserrsComponent } from './userrs.component';
 import { SearchComponent } from './search/components/search/search.component';
-import { FriendsComponent } from './friends/components/friends/friends.component';
+import { FollowComponent } from './follow/components/follow/follow.component';
 
 const routes: Routes = [
   {
@@ -15,8 +14,8 @@ const routes: Routes = [
     component:  SearchComponent
   }, 
   { 
-    path: 'friends', 
-    component:  FriendsComponent
+    path: 'follow', 
+    component:  FollowComponent
   }
 ];
 

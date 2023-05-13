@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Notification } from './models/notification.model';
 import { NotificationsService } from './services/notifications.service';
-import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-notifications',
@@ -14,7 +14,7 @@ export class NotificationsComponent {
 
   constructor(
     private notificationsService: NotificationsService,
-    private authServices: AuthService,
+    private authService: AuthService,
   ) {}
   
   ngOnInit(): void {
@@ -27,7 +27,6 @@ export class NotificationsComponent {
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
-    this.notificationsService.connectToNotificationSocket(this.authServices.getUserId());
     this.notificationsService.getNotificationsByUserSocket().subscribe({
       next: (resp: any) => {
         const notification: Notification = resp; 

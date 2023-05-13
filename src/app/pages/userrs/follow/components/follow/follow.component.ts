@@ -1,29 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FriendsService } from '../../services/friends.service';
-import Swal from 'sweetalert2';
+import { FollowService } from '../../services/follow.service';
 import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
 import { UserSearch } from '../../../search/interfaces/userSearch.interface';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-friends',
-  templateUrl: './friends.component.html',
-  styleUrls: ['./friends.component.css']
+  selector: 'app-follow',
+  templateUrl: './follow.component.html',
+  styleUrls: ['./follow.component.css']
 })
-export class FriendsComponent implements OnInit {
+export class FollowComponent implements OnInit {
 
     public followedUsers!: UserSearch[];
     public requestFollowedUsers!: UserSearch[];
     public blockedUsers!: UserSearch[];
 
     constructor(
-      private friendsService: FriendsService,
+      private followService: FollowService,
       private coversationService: ConversationService,
       private router: Router,
     ) { }
 
     ngOnInit(): void {
-      this.friendsService.getFriends().subscribe({
+      this.followService.getFollow().subscribe({
         next: (resp: any) => {
           this.followedUsers = resp.data.findAllFollowedUsers.map((user: UserSearch) => {
             return user;
@@ -31,7 +31,7 @@ export class FriendsComponent implements OnInit {
         }, 
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }); 
-      this.friendsService.getRequestFollowedUsers().subscribe({
+      this.followService.getRequestFollowedUsers().subscribe({
         next: (resp: any) => {
           this.requestFollowedUsers = resp.data.findAllFollowRequests.map((user: UserSearch) => {
             return user;
@@ -39,7 +39,7 @@ export class FriendsComponent implements OnInit {
         }, 
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       });
-      this.friendsService.getBlockedUsers().subscribe({
+      this.followService.getBlockedUsers().subscribe({
         next: (resp: any) => {
           this.blockedUsers = resp.data.findAllBlockedUsers.map((user: UserSearch) => {
             return user;
@@ -50,7 +50,7 @@ export class FriendsComponent implements OnInit {
     }
 
     public blockUser(id: number): void {
-      this.friendsService.blockUser(id).subscribe({
+      this.followService.blockUser(id).subscribe({
         next: (_resp: any) => {
           Swal.fire('Success', 'User blocked', 'success');
           const previousFollowedUsers = this.followedUsers;
@@ -69,7 +69,7 @@ export class FriendsComponent implements OnInit {
     }
 
     public unblockUser(id: number): void {
-      this.friendsService.unblockUser(id).subscribe({
+      this.followService.unblockUser(id).subscribe({
         next: (_resp: any) => {
           Swal.fire('Success', 'User unblocked', 'success');
           const previousBlockedUsers = this.blockedUsers;
@@ -88,7 +88,7 @@ export class FriendsComponent implements OnInit {
     }
 
     public unFollowUser(id: number): void {
-      this.friendsService.unFollowUser(id).subscribe({
+      this.followService.unFollowUser(id).subscribe({
         next: (_resp: any) => {
           Swal.fire('Success', 'User unfollowed', 'success');
           const previousFollowedUsers = this.followedUsers;
@@ -99,7 +99,7 @@ export class FriendsComponent implements OnInit {
     }
 
     public acceptFollowRequest(id: number): void {
-      this.friendsService.acceptFollowUser(id).subscribe({
+      this.followService.acceptFollowUser(id).subscribe({
         next: (_resp: any) => {
           Swal.fire('Success', 'Follow request accepted', 'success');
           const previousRequestFollowedUsers = this.requestFollowedUsers;
@@ -110,7 +110,7 @@ export class FriendsComponent implements OnInit {
     }
 
     public rejectFollowRequest(id: number): void {
-      this.friendsService.rejectFollowUser(id).subscribe({
+      this.followService.rejectFollowUser(id).subscribe({
         next: (_resp: any) => {
           Swal.fire('Success', 'Follow request rejected', 'success');
           const previousRequestFollowedUsers = this.requestFollowedUsers;

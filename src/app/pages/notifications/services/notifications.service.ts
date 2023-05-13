@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { SocketNotification } from '../notifications.module';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { SocketNotification } from '../../pages.module';
 
 @Injectable({
   providedIn: 'root'

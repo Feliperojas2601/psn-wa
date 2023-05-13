@@ -1,9 +1,9 @@
 <div class="container">
   <div class="grid">
     <div class="col-6">
-      <h2>Mis amigos</h2>
+      <h2>Usuarios seguidos</h2>
       <div class="p-listbox mt-3">
-        <div class="p-listbox-header">Lista de amigos</div>
+        <div class="p-listbox-header">Lista de seguidos</div>
         <div class="p-listbox-list">
           <div class="p-listbox-item" *ngFor="let user of followedUsers">
             <div class="mr-2">{{user.name}} {{user.lastName}}</div>
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="col-6">
-      <h2>Mis solicitudes</h2>
+      <h2>Solicitudes de seguimiento</h2>
       <div class="p-listbox mt-3">
         <div class="p-listbox-header">Lista de solicitudes</div>
         <div class="p-listbox-list">

@@ -17,13 +17,13 @@ import Swal from 'sweetalert2';
 export class UserComponent implements OnInit{
 
   public profileTypeOptions: { label: string, value: string }[];
-  public profileFormValue!: ProfileForm;
   public displayImageUploadDialog!: boolean;
   public showButtonSubmit!: boolean;
   public showButtonImage!: boolean;
+  public profileForm!: FormGroup;
+  public profileFormValue!: ProfileForm;
   public profileImageUrlPost!: string;
   public profileImageUrl!: string;
-  public profileForm!: FormGroup;
   public user!: User;
   public id!: number;
 
@@ -53,21 +53,37 @@ export class UserComponent implements OnInit{
       profileUpdateDate: ['', Validators.required],
       profileType: ['PUBLIC', Validators.required],
     });
-    let roleFormControl = this.profileForm.get('role');
-    let profileUpdateDateFormControl = this.profileForm.get('profileUpdateDate');
-    if (roleFormControl != null && profileUpdateDateFormControl != null){
-      roleFormControl.disable();
-      profileUpdateDateFormControl.disable();
-    }
-    
+
     this.activatedRoute.params.subscribe( ({ id }) => {
       this.id = Math.floor(id);
     });
 
-    this.showButtonImage = this.showButtonSubmit = this.authService.getUserId() == this.id;
+    let roleFormControl = this.profileForm.get('role');
+    let profileUpdateDateFormControl = this.profileForm.get('profileUpdateDate');
+    profileUpdateDateFormControl?.disable();
+    roleFormControl?.disable();
+
+    if(this.authService.getUserId() != this.id){
+      this.showButtonImage = this.showButtonSubmit = false;
+      let emailFormControl = this.profileForm.get('email');
+      let nameFormControl = this.profileForm.get('name');
+      let lastNameFormControl = this.profileForm.get('lastName');
+      let phoneNumberFormControl = this.profileForm.get('phoneNumber');
+      let profileTypeFormControl = this.profileForm.get('profileType');
+      let notificationsEnableFormControl = this.profileForm.get('notificationsEnable');
+
+      notificationsEnableFormControl?.disable();
+      profileTypeFormControl?.disable();
+      phoneNumberFormControl?.disable();
+      lastNameFormControl?.disable();
+      nameFormControl?.disable();
+      emailFormControl?.disable();
+    }else{
+      this.showButtonImage = this.showButtonSubmit = true; 
+    }
+
     this.loadProfilePicture(this.id, false);
     this.loadUserInfo(this.id);
-
   }
 
   private loadUserInfo(id: number): void {

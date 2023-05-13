@@ -1,8 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
-import { subscribe } from 'graphql';
-import { MenuItem } from 'primeng/api';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { MenubarService } from '../../services/menubar.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menubar',
@@ -33,9 +34,9 @@ export class MenubarComponent {
       routerLink: ['/psn/profile', this.authService.getUserId()]
     }, 
     {
-      label: 'Amigos',
+      label: 'Seguidos',
       icon: 'pi pi-users',
-      routerLink: ['/psn/userrs/friends']
+      routerLink: ['/psn/userrs/follow']
     },
     {
       label: 'Salir',
@@ -44,11 +45,21 @@ export class MenubarComponent {
     }
   ]; 
 
-  constructor(private authService: AuthService, private router: Router) {}
+  public subscription: Subscription;
+  public bellColor!: string;
+
+  constructor(private authService: AuthService, private router: Router, private menubarService: MenubarService) {
+    this.subscription = menubarService.color$.subscribe(
+      color => (this.bellColor = color)
+    );
+  }
+
+  public changeBellColor(): void {
+    this.bellColor = "white";
+  }
 
   public logout(): void {
-    this.authService.logout().then(
-      () => {
+    this.authService.logout().then(() => {
         this.router.navigate(['/login']);
       }
     );
