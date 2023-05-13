@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { SearchService } from '../../services/search.service';
-import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserSearch } from '../../interfaces/userSearch.interface';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-search',
@@ -13,6 +14,9 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   encapsulation: ViewEncapsulation.None
 })
 export class SearchComponent implements OnInit, OnDestroy {
+  
+  public subscriptionToDestroy: Subscription[] = [];
+
   public filteredUsers!: UserSearch [];
   public recentSearchedUsers!: UserSearch[]; 
   public suggestedUsers!: UserSearch[];
@@ -31,16 +35,17 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchForm = this.fb.group({
       pattern: ['', [Validators.required]]
     });
-    this.searchService.getAllSearchedUsers().subscribe({
+
+    let subscriptionSearchAll = this.searchService.getAllSearchedUsers().subscribe({
       next: (resp: any) => {
         this.recentSearchedUsers = resp.data.findAllSearchedUsers.map((user: UserSearch) => {
           return user;
         });
-        console.log(this.recentSearchedUsers, 'Init');
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-    this.searchService.getAllSuggestedUsers().subscribe({
+
+    let subscriptionSuggested = this.searchService.getAllSuggestedUsers().subscribe({
       next: (resp: any) => {
         this.suggestedUsers = resp.data.findAllSuggestedFriends.map((user: UserSearch) => {
           return user; 
@@ -54,35 +59,40 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       }
     });
-  }
 
-  ngOnDestroy(): void {
+    this.subscriptionToDestroy.push(subscriptionSearchAll);
+    this.subscriptionToDestroy.push(subscriptionSuggested);
   }
 
   public deleteRecentSearchedUsers(): void {
-    this.searchService.deleteRecentSearchedUsers().subscribe({
+    let subscriptionDeleteSearch = this.searchService.deleteRecentSearchedUsers().subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Recent searched users deleted successfully', 'success');
         this.recentSearchedUsers = [];
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
+
+    this.subscriptionToDestroy.push(subscriptionDeleteSearch);    
   }
 
   public followUser(userId: number): void {
-    this.searchService.followUser(userId).subscribe({
+    let subscriptionFollow = this.searchService.followUser(userId).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Requested follow successfully', 'success');
         this.suggestedUsers = this.suggestedUsers.filter((user: UserSearch) => user.id !== userId);
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
+
+    this.subscriptionToDestroy.push(subscriptionFollow);
   }
 
   public filterUser(event: any): void {
     let filtered: UserSearch[] = [];
     let query = event.query;
-    this.searchService.searchUsers(query).subscribe({
+
+    let subscriptionSearchUsers = this.searchService.searchUsers(query).subscribe({
       next: (resp: any) => {
         filtered = resp.data.searchUser.map((user: UserSearch) => {
           return user;
@@ -103,17 +113,28 @@ export class SearchComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
+
+    this.subscriptionToDestroy.push(subscriptionSearchUsers);
   }
 
   public searchUser(): void {
     this.searchFormValue = this.searchForm.value.pattern as UserSearch;
-    this.searchService.searchUser(this.searchFormValue.id).subscribe({
+    
+    let subscriptionUser = this.searchService.searchUser(this.searchFormValue.id).subscribe({
       next: (_resp: any) => {
         this.recentSearchedUsers = [this.searchFormValue, ...this.recentSearchedUsers];
-        console.log(this.recentSearchedUsers);
         this.router.navigate(['/psn/profile', this.searchFormValue.id]);
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
+
+    this.subscriptionToDestroy.push(subscriptionUser);
   }
+
+  ngOnDestroy() {
+    this.subscriptionToDestroy.forEach(sub => {
+      sub.unsubscribe();
+    });
+  }
+
 }

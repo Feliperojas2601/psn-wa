@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Notification } from './models/notification.model';
 import { NotificationsService } from './services/notifications.service';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,16 +10,16 @@ import Swal from 'sweetalert2';
   styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent {
+
+  public subscriptionToDestroy: Subscription[] = [];
   public notifications!: Notification[];
 
   constructor(
     private notificationsService: NotificationsService,
-    private authService: AuthService,
   ) {}
   
   ngOnInit(): void {
-    this.notificationsService.getNotificationsByUser()
-    .subscribe(
+    let subscriptionNotificationSocket = this.notificationsService.getNotificationsByUser().subscribe(
       {
         next: (resp: any) => {
           this.notifications = resp.data.getNotificationsByUser;
@@ -27,14 +27,25 @@ export class NotificationsComponent {
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
-    this.notificationsService.getNotificationsByUserSocket().subscribe({
+
+    let subscriptionNotification = this.notificationsService.getNotificationsByUserSocket().subscribe({
       next: (resp: any) => {
         const notification: Notification = resp; 
         const previousNotifications: Notification[] = this.notifications;
-        const newNotifications: Notification[] = [...previousNotifications, notification];
+        const newNotifications: Notification[] = [notification, ...previousNotifications];
         this.notifications = newNotifications;
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     }); 
+
+    this.subscriptionToDestroy.push(subscriptionNotification);    
+    this.subscriptionToDestroy.push(subscriptionNotificationSocket);    
   }
+
+  ngOnDestroy() {
+    this.subscriptionToDestroy.forEach(sub => {
+      sub.unsubscribe();
+    });
+  }
+
 }

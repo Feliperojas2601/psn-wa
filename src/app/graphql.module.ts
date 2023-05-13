@@ -33,6 +33,19 @@ export function createApollo(httpLink: HttpLink, jwtService: JwtService): Apollo
   return {
     link,
     cache: new InMemoryCache(),
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+      },
+      query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+      },
+      mutate: {
+        errorPolicy: 'all'
+      }
+    },
   };
 }
 

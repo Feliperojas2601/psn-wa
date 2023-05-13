@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Conversation } from '../../models/conversation.model';
-import { Router } from '@angular/router';
 import { ConversationService } from '../../services/conversation.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,6 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class ConversationListComponent implements OnInit {
 
+  public subscriptionToDestroy: Subscription[] = [];
   public conversations!: Conversation[];
 
   constructor(
@@ -20,8 +22,7 @@ export class ConversationListComponent implements OnInit {
   ) {}
   
   ngOnInit(): void {
-    this.conversationService.getConversationsByUser()
-    .subscribe(
+    let subscriptionConversationByUser = this.conversationService.getConversationsByUser().subscribe(
       {
         next: (resp: any) => {
           this.conversations = resp.data.getConversationsByUser;
@@ -29,6 +30,8 @@ export class ConversationListComponent implements OnInit {
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
+
+    this.subscriptionToDestroy.push(subscriptionConversationByUser);
   }
 
   public navigateToConversation(id: number, username: string): void {
@@ -38,8 +41,7 @@ export class ConversationListComponent implements OnInit {
   }
 
   public deleteConversationByUser(conversationId: string): void {
-    this.conversationService.deleteConversationByUser(conversationId)
-    .subscribe(
+    let subscriptionDeleteConversation = this.conversationService.deleteConversationByUser(conversationId).subscribe(
       {
         next: (_resp: any) => {
           this.conversations = this.conversations.filter((conversation: Conversation) => conversation._id != conversationId);
@@ -48,6 +50,14 @@ export class ConversationListComponent implements OnInit {
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
+
+    this.subscriptionToDestroy.push(subscriptionDeleteConversation);
+  }
+
+  ngOnDestroy() {
+    this.subscriptionToDestroy.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
 }

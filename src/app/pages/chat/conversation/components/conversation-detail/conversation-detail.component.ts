@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { MessageService } from '../../../message/services/message.service';
-import { ActivatedRoute } from '@angular/router';
-import { Message } from '../../../message/models/message.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/services/auth.service';
-
+import { Message } from '../../../message/models/message.model';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-conversation-detail',
@@ -14,8 +14,9 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class ConversationDetailComponent {
 
-  
+  public subscriptionToDestroy: Subscription[] = [];
   public messages!: Message[];
+
   public id!: string;
   public username!: string;
   public chatForm!: FormGroup; 
@@ -29,15 +30,16 @@ export class ConversationDetailComponent {
   ) {}
   
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe( ({ id, username }) => {
+    let subscriptionActiveParams = this.activatedRoute.params.subscribe( ({ id, username }) => {
       this.id = id;  
       this.username = username;
     });
+
     this.chatForm = this.fb.group({
       content: ['', Validators.required],
     });
-    this.messageService.getMessagesByConversation(this.id)
-    .subscribe(
+
+    let subscriptionGetMessages = this.messageService.getMessagesByConversation(this.id).subscribe(
       {
         next: (resp: any) => {
           this.messages = resp.data.getMessagesByConversation;
@@ -61,8 +63,10 @@ export class ConversationDetailComponent {
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
+
     this.messageService.connectToChatSocket(this.authService.getUserId(), this.id);
-    this.messageService.getMessagesByConversationSocket().subscribe({
+    
+    let subscriptionMessagesSocket = this.messageService.getMessagesByConversationSocket().subscribe({
       next: (resp: any) => {
         const message: Message = resp; 
         const updatedMessage = new Message(
@@ -82,7 +86,8 @@ export class ConversationDetailComponent {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     }); 
-    this.messageService.getMessagesDeletedByConversationSocket().subscribe({
+
+    let subscriptionDeleteConversations = this.messageService.getMessagesDeletedByConversationSocket().subscribe({
       next: (resp: any) => {
         const message: Message = resp;
         const newMessages = this.messages.filter(messageResp => messageResp._id !== message._id);
@@ -90,12 +95,23 @@ export class ConversationDetailComponent {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
+
+    this.subscriptionToDestroy.push(subscriptionActiveParams);
+    this.subscriptionToDestroy.push(subscriptionGetMessages);
+    this.subscriptionToDestroy.push(subscriptionMessagesSocket);
+    this.subscriptionToDestroy.push(subscriptionDeleteConversations);
   }
 
   public createMessage(): void {
     this.chatFormValue = this.chatForm.value.content as string;
     this.chatForm.patchValue({ content: '' });
     this.messageService.createMessageSocket(this.chatFormValue, this.id, this.authService.getUserId());
+  }
+
+  ngOnDestroy() {
+    this.subscriptionToDestroy.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
 }
