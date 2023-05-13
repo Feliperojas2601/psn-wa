@@ -64,7 +64,6 @@ export class MessageService {
       userId, 
       conversationId,
     };
-    console.log(payload);
     this.socket.emit('DELETE_MESSAGE', payload);
   }
 

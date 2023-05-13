@@ -11,18 +11,19 @@
           <button type="button" pButton icon="pi pi-trash" (click)="deleteRecentSearchedUsers()" ></button>
         </div>
         <div class="p-listbox-list">
-          <div class="p-listbox-item" *ngFor="let user of recentSearchedUsers">
+          <div class="p-listbox-item" *ngFor="let user of recentSearchedUsers" [routerLink]="['/psn/profile', user.id]">
             <div class="mr-2">{{user.name}} {{user.lastName}}</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-6">
-      <div class="p-listbox mt-3">
+    <div class="col-6" style="margin-top: 132px;">
+      <div class="p-listbox mt-3 suggestedUser-table">
         <div class="p-listbox-header">Amigos sugeridos</div>
-        <div class="p-listbox-list">
+        <div class="p-listbox-list suggestedUser-container">
           <div class="p-listbox-item" *ngFor="let user of suggestedUsers">
             <div class="mr-2">{{user.name}} {{user.lastName}}</div>
+            <button type="button" pButton (click)="seeUserProfile(user.id)" label="Ver"></button>
             <button type="button" pButton (click)="followUser(user.id)" label="Agregar"></button>
           </div>
         </div>

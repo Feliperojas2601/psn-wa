@@ -76,6 +76,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.subscriptionToDestroy.push(subscriptionDeleteSearch);    
   }
 
+  public seeUserProfile(userId: number): void {
+    this.router.navigateByUrl('/psn/profile/' + userId);
+  }
+
   public followUser(userId: number): void {
     let subscriptionFollow = this.searchService.followUser(userId).subscribe({
       next: (_resp: any) => {
