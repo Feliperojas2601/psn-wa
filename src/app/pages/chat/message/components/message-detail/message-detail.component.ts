@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { Message } from '../../models/message.model';
-import { MessageService } from '../../services/message.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { MessageService } from '../../services/message.service';
+import { Message } from '../../models/message.model';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-message-detail',

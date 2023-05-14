@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
 import { NotificationsService } from './notifications/services/notifications.service';
 import { MenubarService } from 'src/app/shared/services/menubar.service';
 import { AuthService } from '../auth/services/auth.service';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-
 
 @Component({
   selector: 'app-pages',

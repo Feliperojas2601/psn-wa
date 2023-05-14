@@ -1,8 +1,8 @@
+import { VerifyTokenForm } from '../../interfaces/verify-token-form.interface';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { VerifyTokenForm } from '../../interfaces/verify-token-form.interface';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({

@@ -1,6 +1,6 @@
+import { ConversationService } from '../../services/conversation.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Conversation } from '../../models/conversation.model';
-import { ConversationService } from '../../services/conversation.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';

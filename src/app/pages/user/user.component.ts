@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../auth/services/auth.service';
 import { ProfileForm } from './interfaces/profile-form.interface';
+import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from './services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { User} from './models/user.model'

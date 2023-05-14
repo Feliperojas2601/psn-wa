@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FollowService } from '../../../follow/services/follow.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserSearch } from '../../interfaces/userSearch.interface';

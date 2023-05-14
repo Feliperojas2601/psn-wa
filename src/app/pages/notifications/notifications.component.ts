@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Notification } from './models/notification.model';
 import { NotificationsService } from './services/notifications.service';
+import { Notification } from './models/notification.model';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
 import { MessageService } from '../../../message/services/message.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Message } from '../../../message/models/message.model';
 import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 

@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ResetPasswordConfirmedForm } from '../../interfaces/reset-password-confirmed-form.interface';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reset-password-confirmed',

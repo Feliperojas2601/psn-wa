@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FollowService } from '../../services/follow.service';
 import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
 import { UserSearch } from '../../../search/interfaces/userSearch.interface';
+import { FollowService } from '../../services/follow.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
