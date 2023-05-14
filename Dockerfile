@@ -14,4 +14,4 @@ RUN npm run build --prod
 
 EXPOSE 4600
 
-CMD ["npm", "run", "start", "--", "--host", "psn-wa-service"]
+CMD ["npm", "run", "start", "--", "--host", "psn-nginx-service"]
