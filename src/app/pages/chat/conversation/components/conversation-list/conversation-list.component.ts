@@ -22,36 +22,36 @@ export class ConversationListComponent implements OnInit {
   ) {}
   
   ngOnInit(): void {
-    let subscriptionConversationByUser = this.conversationService.getConversationsByUser().subscribe(
-      {
-        next: (resp: any) => {
-          this.conversations = resp.data.getConversationsByUser;
-        }, 
-        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-      }
-    );
+    this.getConversationsByUser();
+  }
 
-    this.subscriptionToDestroy.push(subscriptionConversationByUser);
+  public getConversationsByUser(): void {
+    let subGetConversationsByUser = this.conversationService.getConversationsByUser().subscribe({
+      next: (resp: any) => {
+        this.conversations = resp.data.getConversationsByUser;
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subGetConversationsByUser);
+  }
+
+  public deleteConversationByUser(conversationId: string): void {
+    let subDeleteConversationByUser = this.conversationService.deleteConversationByUser(conversationId).subscribe({
+      next: (_resp: any) => {
+        this.conversations = this.conversations.filter((conversation: Conversation) => conversation._id != conversationId);
+        Swal.fire('Success', 'Conversación eliminada', 'success');
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subDeleteConversationByUser);
   }
 
   public navigateToConversation(id: number, username: string): void {
     const currentUrl = this.router.url;
     const newUrl = `${currentUrl}/${id}/${username}`;
     this.router.navigateByUrl(newUrl);
-  }
-
-  public deleteConversationByUser(conversationId: string): void {
-    let subscriptionDeleteConversation = this.conversationService.deleteConversationByUser(conversationId).subscribe(
-      {
-        next: (_resp: any) => {
-          this.conversations = this.conversations.filter((conversation: Conversation) => conversation._id != conversationId);
-          Swal.fire('Success', 'Conversación eliminada', 'success');
-        }, 
-        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-      }
-    );
-
-    this.subscriptionToDestroy.push(subscriptionDeleteConversation);
   }
 
   ngOnDestroy() {

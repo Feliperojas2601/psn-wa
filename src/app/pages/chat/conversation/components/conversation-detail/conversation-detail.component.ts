@@ -24,9 +24,9 @@ export class ConversationDetailComponent {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
     private messageService: MessageService, 
     private authService: AuthService,
+    private fb: FormBuilder,
   ) {}
   
   ngOnInit(): void {
@@ -34,39 +34,48 @@ export class ConversationDetailComponent {
       this.id = id;  
       this.username = username;
     });
+    this.subscriptionToDestroy.push(subscriptionActiveParams);
 
     this.chatForm = this.fb.group({
       content: ['', Validators.required],
     });
 
-    let subscriptionGetMessages = this.messageService.getMessagesByConversation(this.id).subscribe(
-      {
-        next: (resp: any) => {
-          this.messages = resp.data.getMessagesByConversation;
-          this.messages.forEach((message: Message, index: number) => {
-            const updatedMessage = new Message(
-              message._id,
-              message.content,
-              message.userId,
-              message.conversationId,
-              message.createDate,
-              message.updateDate,
-              message.active, 
-              message.userId == this.authService.getUserId(),
-              this.username,
-            ); 
-            const updatedMessages = [...this.messages];
-            updatedMessages[index] = updatedMessage;
-            this.messages = updatedMessages;
-          });
-        }, 
-        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-      }
-    );
+    this.getMessagesByConversation();
 
     this.messageService.connectToChatSocket(this.authService.getUserId(), this.id);
-    
-    let subscriptionMessagesSocket = this.messageService.getMessagesByConversationSocket().subscribe({
+    this.getMessagesByConversationSocket();
+    this.getMessagesDeletedByConversationSocket();
+  }
+
+  public getMessagesByConversation(): void {
+    let subGetMessagesByConversation = this.messageService.getMessagesByConversation(this.id).subscribe({
+      next: (resp: any) => {
+        this.messages = resp.data.getMessagesByConversation;
+        this.messages.forEach((message: Message, index: number) => {
+          const updatedMessage = new Message(
+            message._id,
+            message.content,
+            message.userId,
+            message.conversationId,
+            message.createDate,
+            message.updateDate,
+            message.active, 
+            message.userId == this.authService.getUserId(),
+            this.username,
+          ); 
+          const updatedMessages = [...this.messages];
+          updatedMessages[index] = updatedMessage;
+          this.messages = updatedMessages;
+        });
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subGetMessagesByConversation);
+  }
+
+  public getMessagesByConversationSocket(): void {
+    let subGetMessagesByConversationSocket = this.messageService.getMessagesByConversationSocket().subscribe({
       next: (resp: any) => {
         const message: Message = resp; 
         const updatedMessage = new Message(
@@ -85,9 +94,13 @@ export class ConversationDetailComponent {
         this.messages = newMessages;
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-    }); 
+    });
 
-    let subscriptionDeleteConversations = this.messageService.getMessagesDeletedByConversationSocket().subscribe({
+    this.subscriptionToDestroy.push(subGetMessagesByConversationSocket);
+  }
+
+  public getMessagesDeletedByConversationSocket(): void {
+    let subGetMessagesDeletedByConversationSocket = this.messageService.getMessagesDeletedByConversationSocket().subscribe({
       next: (resp: any) => {
         const message: Message = resp;
         const newMessages = this.messages.filter(messageResp => messageResp._id !== message._id);
@@ -96,10 +109,7 @@ export class ConversationDetailComponent {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionActiveParams);
-    this.subscriptionToDestroy.push(subscriptionGetMessages);
-    this.subscriptionToDestroy.push(subscriptionMessagesSocket);
-    this.subscriptionToDestroy.push(subscriptionDeleteConversations);
+    this.subscriptionToDestroy.push(subGetMessagesDeletedByConversationSocket);
   }
 
   public createMessage(): void {

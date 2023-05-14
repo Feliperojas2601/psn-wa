@@ -17,21 +17,20 @@ export class PagesComponent {
 
   constructor(
     private notificationsService: NotificationsService,
-    private authService: AuthService,
     private menubarService: MenubarService,
+    private authService: AuthService,
   ){}
 
   ngOnInit(): void {
     this.notificationsService.connectToNotificationSocket(this.authService.getUserId());
-    
-    let subscriptionNotification = this.notificationsService.getNotificationsByUserSocket().subscribe({
+    let subGetNotificationsByUserSocket = this.notificationsService.getNotificationsByUserSocket().subscribe({
       next: (resp: any) => {
         this.menubarService.toggleBellColor("red");
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionNotification);
+    this.subscriptionToDestroy.push(subGetNotificationsByUserSocket);
   }
 
   ngOnDestroy() {

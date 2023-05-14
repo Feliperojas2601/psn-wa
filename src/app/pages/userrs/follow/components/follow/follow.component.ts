@@ -26,16 +26,26 @@ export class FollowComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    let subscriptionFollow = this.followService.getFollow().subscribe({
+    this.getFollowedUsers();
+    this.getRequestFollowedUsers();
+    this.getBlockedUsers();
+  }
+
+  public getFollowedUsers(): void {
+    let subGetFollow = this.followService.getFollow().subscribe({
       next: (resp: any) => {
         this.followedUsers = resp.data.findAllFollowedUsers.map((user: UserSearch) => {
           return user;
         });
-      }, 
+      },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-    }); 
+    });
 
-    let subscriptionRequestFollow = this.followService.getRequestFollowedUsers().subscribe({
+    this.subscriptionToDestroy.push(subGetFollow);
+  }
+
+  public getRequestFollowedUsers(): void {
+    let subGetRequestFollowedUsers = this.followService.getRequestFollowedUsers().subscribe({
       next: (resp: any) => {
         this.requestFollowedUsers = resp.data.findAllFollowRequests.map((user: UserSearch) => {
           return user;
@@ -44,7 +54,11 @@ export class FollowComponent implements OnInit {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    let subscriptionRequestBlockedUsers = this.followService.getBlockedUsers().subscribe({
+    this.subscriptionToDestroy.push(subGetRequestFollowedUsers);
+  }
+
+  public getBlockedUsers(): void {
+    let subGetBlockedUsers = this.followService.getBlockedUsers().subscribe({
       next: (resp: any) => {
         this.blockedUsers = resp.data.findAllBlockedUsers.map((user: UserSearch) => {
           return user;
@@ -53,13 +67,11 @@ export class FollowComponent implements OnInit {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionFollow);
-    this.subscriptionToDestroy.push(subscriptionRequestFollow);
-    this.subscriptionToDestroy.push(subscriptionRequestBlockedUsers);
+    this.subscriptionToDestroy.push(subGetBlockedUsers);
   }
 
   public blockUser(id: number): void {
-    let subscriptionBlockUser = this.followService.blockUser(id).subscribe({
+    let subBlockUser = this.followService.blockUser(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'User blocked', 'success');
         const previousFollowedUsers = this.followedUsers;
@@ -76,11 +88,11 @@ export class FollowComponent implements OnInit {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionBlockUser);
+    this.subscriptionToDestroy.push(subBlockUser);
   }
 
   public unblockUser(id: number): void {
-    let subscriptionUnblockUser = this.followService.unblockUser(id).subscribe({
+    let subUnblockUser = this.followService.unblockUser(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'User unblocked', 'success');
         const previousBlockedUsers = this.blockedUsers;
@@ -92,16 +104,16 @@ export class FollowComponent implements OnInit {
           completeName: '',
         };
         this.blockedUsers = previousBlockedUsers.filter((user: UserSearch) => user.id !== id);
-        this.followedUsers = [...this.followedUsers, user];
+        this.getFollowedUsers();
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionUnblockUser);
+    this.subscriptionToDestroy.push(subUnblockUser);
   }
 
   public unFollowUser(id: number): void {
-    let subscriptionUnFollowUser = this.followService.unFollowUser(id).subscribe({
+    let subUnFollowUser = this.followService.unFollowUser(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'User unfollowed', 'success');
         const previousFollowedUsers = this.followedUsers;
@@ -110,11 +122,11 @@ export class FollowComponent implements OnInit {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionUnFollowUser);
+    this.subscriptionToDestroy.push(subUnFollowUser);
   }
 
   public acceptFollowRequest(id: number): void {
-    let subscriptionAcceptFollow = this.followService.acceptFollowUser(id).subscribe({
+    let subAcceptFollowUser = this.followService.acceptFollowUser(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Follow request accepted', 'success');
         const previousRequestFollowedUsers = this.requestFollowedUsers;
@@ -123,11 +135,11 @@ export class FollowComponent implements OnInit {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionAcceptFollow);
+    this.subscriptionToDestroy.push(subAcceptFollowUser);
   }
 
   public rejectFollowRequest(id: number): void {
-    let subscriptionRejectFollow = this.followService.rejectFollowUser(id).subscribe({
+    let subRejectFollowUser = this.followService.rejectFollowUser(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Follow request rejected', 'success');
         const previousRequestFollowedUsers = this.requestFollowedUsers;
@@ -136,11 +148,11 @@ export class FollowComponent implements OnInit {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionRejectFollow);
+    this.subscriptionToDestroy.push(subRejectFollowUser);
   }
 
   public createConversation(id: number): void {
-    let subscriptionCreateConversation = this.coversationService.createConversation(id).subscribe({
+    let subCreateConversation = this.coversationService.createConversation(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Conversation created', 'success');
         this.router.navigate([`psn/chat`]);
@@ -148,7 +160,7 @@ export class FollowComponent implements OnInit {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionCreateConversation);
+    this.subscriptionToDestroy.push(subCreateConversation);
   }
 
   ngOnDestroy() {

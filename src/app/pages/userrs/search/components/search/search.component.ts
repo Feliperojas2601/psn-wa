@@ -27,12 +27,12 @@ export class SearchComponent implements OnInit, OnDestroy {
   public searchFormValue!: UserSearch; 
 
   constructor(
+    private coversationService: ConversationService,
     private readonly searchService: SearchService,
+    private readonly authService: AuthService,
+    private followService: FollowService,
     private readonly fb: FormBuilder,
     private readonly router: Router,
-    private readonly authService: AuthService,
-    private coversationService: ConversationService,
-    private followService: FollowService,
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +40,12 @@ export class SearchComponent implements OnInit, OnDestroy {
       pattern: ['', [Validators.required]]
     });
 
-    let subscriptionSearchAll = this.searchService.getAllSearchedUsers().subscribe({
+    this.getAllSearchedUsers();
+    this.getAllSuggestedUsers();
+  }
+
+  public getAllSearchedUsers(): void {
+    let subGetAllSearchedUsers = this.searchService.getAllSearchedUsers().subscribe({
       next: (resp: any) => {
         this.recentSearchedUsers = resp.data.findAllSearchedUsers.map((user: UserSearch) => {
           return user;
@@ -49,7 +54,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    let subscriptionSuggested = this.searchService.getAllSuggestedUsers().subscribe({
+    this.subscriptionToDestroy.push(subGetAllSearchedUsers);
+  }
+
+  public getAllSuggestedUsers(): void {
+    let subGetAllSuggestedUsers = this.searchService.getAllSuggestedUsers().subscribe({
       next: (resp: any) => {
         this.suggestedUsers = resp.data.findAllSuggestedFriends.map((user: UserSearch) => {
           return user; 
@@ -64,12 +73,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptionToDestroy.push(subscriptionSearchAll);
-    this.subscriptionToDestroy.push(subscriptionSuggested);
+    this.subscriptionToDestroy.push(subGetAllSuggestedUsers);
   }
 
   public deleteRecentSearchedUsers(): void {
-    let subscriptionDeleteSearch = this.searchService.deleteRecentSearchedUsers().subscribe({
+    let subDeleteRecentSearchedUsers = this.searchService.deleteRecentSearchedUsers().subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Recent searched users deleted successfully', 'success');
         this.recentSearchedUsers = [];
@@ -77,11 +85,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionDeleteSearch);    
+    this.subscriptionToDestroy.push(subDeleteRecentSearchedUsers);    
   }
 
   public followUser(userId: number): void {
-    let subscriptionFollow = this.searchService.followUser(userId).subscribe({
+    let subFollowUser = this.searchService.followUser(userId).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Requested follow successfully', 'success');
         this.suggestedUsers = this.suggestedUsers.filter((user: UserSearch) => user.id !== userId);
@@ -89,14 +97,14 @@ export class SearchComponent implements OnInit, OnDestroy {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionFollow);
+    this.subscriptionToDestroy.push(subFollowUser);
   }
 
   public filterUser(event: any): void {
     let filtered: UserSearch[] = [];
     let query = event.query;
 
-    let subscriptionSearchUsers = this.searchService.searchUsers(query).subscribe({
+    let subSearchUsers = this.searchService.searchUsers(query).subscribe({
       next: (resp: any) => {
         filtered = resp.data.searchUser.map((user: UserSearch) => {
           return user;
@@ -118,13 +126,13 @@ export class SearchComponent implements OnInit, OnDestroy {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionSearchUsers);
+    this.subscriptionToDestroy.push(subSearchUsers);
   }
 
   public searchUser(): void {
     this.searchFormValue = this.searchForm.value.pattern as UserSearch;
     
-    let subscriptionUser = this.searchService.searchUser(this.searchFormValue.id).subscribe({
+    let subSearchUser = this.searchService.searchUser(this.searchFormValue.id).subscribe({
       next: (_resp: any) => {
         this.recentSearchedUsers = [this.searchFormValue, ...this.recentSearchedUsers];
         this.router.navigate(['/psn/profile', this.searchFormValue.id]);
@@ -132,11 +140,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionUser);
+    this.subscriptionToDestroy.push(subSearchUser);
   }
 
   public createConversation(id: number): void {
-    let subscriptionCreateConversation = this.coversationService.createConversation(id).subscribe({
+    let subCreateConversation = this.coversationService.createConversation(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Conversation created', 'success');
         this.router.navigate([`psn/chat`]);
@@ -144,18 +152,18 @@ export class SearchComponent implements OnInit, OnDestroy {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionCreateConversation);
+    this.subscriptionToDestroy.push(subCreateConversation);
   }
 
   public blockUser(id: number): void {
-    let subscriptionBlockUser = this.followService.blockUser(id).subscribe({
+    let subBlockUser = this.followService.blockUser(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'User blocked', 'success');
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionBlockUser);
+    this.subscriptionToDestroy.push(subBlockUser);
   }
 
   ngOnDestroy() {

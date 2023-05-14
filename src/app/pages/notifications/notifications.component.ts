@@ -19,16 +19,23 @@ export class NotificationsComponent {
   ) {}
   
   ngOnInit(): void {
-    let subscriptionNotificationSocket = this.notificationsService.getNotificationsByUser().subscribe(
-      {
-        next: (resp: any) => {
-          this.notifications = resp.data.getNotificationsByUser;
-        }, 
-        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-      }
-    );
+    this.getNotificationsByUser();
+    this.getNotificationsByUserSocket();
+  }
 
-    let subscriptionNotification = this.notificationsService.getNotificationsByUserSocket().subscribe({
+  public getNotificationsByUser(): void {
+    let subGetNotificationsByUser = this.notificationsService.getNotificationsByUser().subscribe({
+      next: (resp: any) => {
+        this.notifications = resp.data.getNotificationsByUser;
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subGetNotificationsByUser);
+  }
+
+  public getNotificationsByUserSocket(): void {
+    let subGetNotificationsByUserSocket = this.notificationsService.getNotificationsByUserSocket().subscribe({
       next: (resp: any) => {
         const notification: Notification = resp; 
         const previousNotifications: Notification[] = this.notifications;
@@ -38,8 +45,7 @@ export class NotificationsComponent {
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     }); 
 
-    this.subscriptionToDestroy.push(subscriptionNotification);    
-    this.subscriptionToDestroy.push(subscriptionNotificationSocket);    
+    this.subscriptionToDestroy.push(subGetNotificationsByUserSocket);    
   }
 
   ngOnDestroy() {

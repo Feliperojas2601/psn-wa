@@ -19,7 +19,6 @@ export class MessageDetailComponent {
   ) {}
 
   public deleteMessage(): void {
-    console.log(this.message)
     this.messageService.deleteMessageSocket(this.message._id, this.authService.getUserId() ,this.message.conversationId);
   }
 }

@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  baseUrl: 'http://35.194.16.155:4500/', 
-  baseUrlNotificationSocket: 'http://34.136.164.255:4401/notification', 
-  baseUrlChatSocket: 'http://34.69.115.162:4300/chat/message'
+  baseUrl: 'http://34.139.50.251:4500/', 
+  baseUrlNotificationSocket: 'http://34.138.49.146:4401/notification', 
+  baseUrlChatSocket: 'http://35.229.124.217:4300/chat/message'
 };

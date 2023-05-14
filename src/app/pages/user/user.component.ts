@@ -85,12 +85,12 @@ export class UserComponent implements OnInit{
       this.showButtonImage = this.showButtonSubmit = true; 
     }
 
-    this.loadProfilePicture(this.id, false);
+    this.loadProfilePicture(this.id);
     this.loadUserInfo(this.id);
   }
 
   private loadUserInfo(id: number): void {
-    let subscriptionFindUser = this.userService.findUserById(id).subscribe({
+    let subFindUserById = this.userService.findUserById(id).subscribe({
         next: (resp: any) => {
           this.user = resp.data.findUserById;
           this.profileForm.setValue({
@@ -108,23 +108,23 @@ export class UserComponent implements OnInit{
       }
     );
 
-    this.subscriptionToDestroy.push(subscriptionFindUser);
+    this.subscriptionToDestroy.push(subFindUserById);
   }
 
-  private loadProfilePicture(id: number, reload: boolean): void {
-    let subscriptionGetProfilePicture = this.userService.getProfilePicture(id).subscribe({
+  private loadProfilePicture(id: number): void {
+    let subGetProfilePicture = this.userService.getProfilePicture(id).subscribe({
       next: (resp: any) => {
         this.profileImageUrl = resp.data.getProfilePicture;
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
 
-    this.subscriptionToDestroy.push(subscriptionGetProfilePicture);
+    this.subscriptionToDestroy.push(subGetProfilePicture);
   }
   
 
   public changeProfileImage(): void {
-    let subscriptionChangeProfilePicture = this.userService.changeProfilePicture().subscribe({
+    let subChangeProfilePicture = this.userService.changeProfilePicture().subscribe({
       next: (resp: any) => {
         this.profileImageUrlPost = resp.data.changeProfilePicture;
         this.displayImageUploadDialog = true;
@@ -133,19 +133,12 @@ export class UserComponent implements OnInit{
       }
     );
 
-    this.subscriptionToDestroy.push(subscriptionChangeProfilePicture);
-  }
-
-  public handleUpload(): void {
-    this.displayImageUploadDialog = false;
-    Swal.fire('Éxito', "Datos guardados con éxito", 'success'); 
-    window.location.reload(); 
+    this.subscriptionToDestroy.push(subChangeProfilePicture);
   }
 
   public updateProfile(): void {
     this.profileFormValue = this.profileForm.value as ProfileForm;
-    
-    let subscriptionEditUser = this.userService.editUserById(this.id, this.profileFormValue).subscribe({
+    let subEditUserById = this.userService.editUserById(this.id, this.profileFormValue).subscribe({
       next: (_resp: any) => {
         Swal.fire('Éxito', "Datos guardados con éxito", 'success')
       }, 
@@ -153,7 +146,13 @@ export class UserComponent implements OnInit{
       }
     );
 
-    this.subscriptionToDestroy.push(subscriptionEditUser);
+    this.subscriptionToDestroy.push(subEditUserById);
+  }
+
+  public handleUpload(): void {
+    this.displayImageUploadDialog = false;
+    Swal.fire('Éxito', "Datos guardados con éxito", 'success'); 
+    window.location.reload(); 
   }
 
   ngOnDestroy() {

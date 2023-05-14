@@ -36,14 +36,14 @@ export function createApollo(httpLink: HttpLink, jwtService: JwtService): Apollo
     defaultOptions: {
       watchQuery: {
         fetchPolicy: 'no-cache',
-        errorPolicy: 'ignore',
+        errorPolicy: 'none',
       },
       query: {
         fetchPolicy: 'no-cache',
-        errorPolicy: 'all',
+        errorPolicy: 'none',
       },
       mutate: {
-        errorPolicy: 'all'
+        errorPolicy: 'none',
       }
     },
   };
