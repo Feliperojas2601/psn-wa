@@ -14,11 +14,10 @@
         </div>
       </div>
     </div>
-    <div class="col-6">
-      <h2>Solicitudes de seguimiento</h2>
-      <div class="p-listbox mt-3">
+    <div class="col-6" style="margin-top: 72px;">
+      <div class="p-listbox mt-3 followRequest-table">
         <div class="p-listbox-header">Lista de solicitudes</div>
-        <div class="p-listbox-list">
+        <div class="p-listbox-list followRequest-container">
           <div class="p-listbox-item" *ngFor="let user of requestFollowedUsers">
             <div class="mr-2">{{user.name}} {{user.lastName}}</div>
             <button type="button" pButton (click)="acceptFollowRequest(user.id)" icon="pi pi-check"></button>
@@ -26,10 +25,9 @@
           </div>
         </div>
       </div>
-      <h2>Usuarios bloqueados</h2>
-      <div class="p-listbox mt-3">
+      <div class="p-listbox mt-3 blockRequest-table">
         <div class="p-listbox-header">Lista de bloqueados</div>
-        <div class="p-listbox-list">
+        <div class="p-listbox-list blockRequest-container">
           <div class="p-listbox-item" *ngFor="let user of blockedUsers">
             <div class="mr-2">{{user.name}} {{user.lastName}}</div>
             <button type="button" pButton (click)="unblockUser(user.id)" icon="pi pi-times"></button>

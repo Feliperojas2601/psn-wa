@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { SearchService } from '../../services/search.service';
+import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
+import { FollowService } from '../../../follow/services/follow.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserSearch } from '../../interfaces/userSearch.interface';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { SearchService } from '../../services/search.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -29,6 +31,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly authService: AuthService,
+    private coversationService: ConversationService,
+    private followService: FollowService,
   ) { }
 
   ngOnInit(): void {
@@ -74,10 +78,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptionToDestroy.push(subscriptionDeleteSearch);    
-  }
-
-  public seeUserProfile(userId: number): void {
-    this.router.navigateByUrl('/psn/profile/' + userId);
   }
 
   public followUser(userId: number): void {
@@ -133,6 +133,29 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptionToDestroy.push(subscriptionUser);
+  }
+
+  public createConversation(id: number): void {
+    let subscriptionCreateConversation = this.coversationService.createConversation(id).subscribe({
+      next: (_resp: any) => {
+        Swal.fire('Success', 'Conversation created', 'success');
+        this.router.navigate([`psn/chat`]);
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subscriptionCreateConversation);
+  }
+
+  public blockUser(id: number): void {
+    let subscriptionBlockUser = this.followService.blockUser(id).subscribe({
+      next: (_resp: any) => {
+        Swal.fire('Success', 'User blocked', 'success');
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subscriptionBlockUser);
   }
 
   ngOnDestroy() {
