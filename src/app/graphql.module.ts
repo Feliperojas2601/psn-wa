@@ -12,6 +12,7 @@ export function createApollo(httpLink: HttpLink, jwtService: JwtService): Apollo
   const basic = setContext(() => ({
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
     }
   }));
   const auth = setContext(() => {
