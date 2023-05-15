@@ -60,17 +60,17 @@ export class UserService {
     });
   }
 
-  public getProfilePicture(id: number): Observable<MutationResult> {
+  public getProfilePicture(ids: number[]): Observable<MutationResult> {
     const GETPROFILEPICTURE = gql`
-        query Query($id: Int!) {
-          getProfilePicture(id: $id)
+        query Query($ids: [Int!]!) {
+          getProfilePicture(ids: $ids)
         }
     `;
 
     return this.apollo.query({
       query: GETPROFILEPICTURE,
       variables: {
-        id: id,
+        ids: ids,
       }
     });
   }

@@ -1,3 +1,5 @@
+import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
+import { FollowService } from '../userrs/follow/services/follow.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileForm } from './interfaces/profile-form.interface';
@@ -20,7 +22,7 @@ export class UserComponent implements OnInit{
   public subscriptionToDestroy: Subscription[] = [];
   public profileTypeOptions: { label: string, value: string }[];
 
-  public displayImageUploadDialog!: boolean;
+  public displayButtons!: boolean;
   public showButtonSubmit!: boolean;
   public showButtonImage!: boolean;
   public profileForm!: FormGroup;
@@ -31,14 +33,16 @@ export class UserComponent implements OnInit{
   public id!: number;
 
   constructor(
+    private coversationService: ConversationService,
     private activatedRoute: ActivatedRoute,
+    private followService: FollowService,
     private userService: UserService, 
     private authService: AuthService,
     private fb: FormBuilder, 
     private router: Router,
   ) {
     this.profileImageUrl = '../../assets/images/logo.jpg';
-    this.displayImageUploadDialog = false;
+    this.displayButtons = false;
     this.profileTypeOptions = [
       { label: 'PUBLIC', value: 'PUBLIC' },
       { label: 'PRIVATE', value: 'PRIVATE' },
@@ -112,7 +116,7 @@ export class UserComponent implements OnInit{
   }
 
   private loadProfilePicture(id: number): void {
-    let subGetProfilePicture = this.userService.getProfilePicture(id).subscribe({
+    let subGetProfilePicture = this.userService.getProfilePicture([id]).subscribe({
       next: (resp: any) => {
         this.profileImageUrl = resp.data.getProfilePicture;
       },
@@ -122,12 +126,35 @@ export class UserComponent implements OnInit{
     this.subscriptionToDestroy.push(subGetProfilePicture);
   }
   
+  public createConversation(id: number): void {
+    let subCreateConversation = this.coversationService.createConversation(id).subscribe({
+      next: (_resp: any) => {
+        Swal.fire('Success', 'Conversation created', 'success');
+        this.router.navigate([`psn/chat`]);
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subCreateConversation);
+  }
+
+  public blockUser(id: number): void {
+    let subBlockUser = this.followService.blockUser(id).subscribe({
+      next: (_resp: any) => {
+        Swal.fire('Success', 'User blocked', 'success');
+        this.router.navigateByUrl("/psn/userrs/follow");
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subBlockUser);
+  }
 
   public changeProfileImage(): void {
     let subChangeProfilePicture = this.userService.changeProfilePicture().subscribe({
       next: (resp: any) => {
         this.profileImageUrlPost = resp.data.changeProfilePicture;
-        this.displayImageUploadDialog = true;
+        this.displayButtons = true;
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
@@ -150,7 +177,7 @@ export class UserComponent implements OnInit{
   }
 
   public handleUpload(): void {
-    this.displayImageUploadDialog = false;
+    this.displayButtons = false;
     Swal.fire('Éxito', "Datos guardados con éxito", 'success'); 
     window.location.reload(); 
   }

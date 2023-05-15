@@ -6,10 +6,10 @@
         <div class="p-listbox-header">Lista de seguidos</div>
         <div class="p-listbox-list">
           <div class="p-listbox-item" *ngFor="let user of followedUsers">
-            <div class="mr-2">{{user.name}} {{user.lastName}}</div>
-            <button type="button" pButton (click)="createConversation(user.id)" icon="pi pi-comment"></button>
-            <button type="button" pButton (click)="unFollowUser(user.id)" icon="pi pi-user-minus"></button>
-            <button type="button" pButton (click)="blockUser(user.id)" icon="pi pi-times"></button>
+            <div routerLink="/psn/profile/{{user.id}}">
+              <div class="ml-2 mb-1">{{user.name}} {{user.lastName}}</div>
+              <button type="button" pButton (click)="unFollowUser(user.id); $event.stopPropagation()" icon="pi pi-user-minus"></button>
+            </div>
           </div>
         </div>
       </div>
@@ -19,7 +19,7 @@
         <div class="p-listbox-header">Lista de solicitudes</div>
         <div class="p-listbox-list followRequest-container">
           <div class="p-listbox-item" *ngFor="let user of requestFollowedUsers">
-            <div class="mr-2">{{user.name}} {{user.lastName}}</div>
+            <div class="ml-2 mb-1">{{user.name}} {{user.lastName}}</div>
             <button type="button" pButton (click)="acceptFollowRequest(user.id)" icon="pi pi-check"></button>
             <button type="button" pButton (click)="rejectFollowRequest(user.id)" icon="pi pi-times"></button>
           </div>
@@ -29,7 +29,7 @@
         <div class="p-listbox-header">Lista de bloqueados</div>
         <div class="p-listbox-list blockRequest-container">
           <div class="p-listbox-item" *ngFor="let user of blockedUsers">
-            <div class="mr-2">{{user.name}} {{user.lastName}}</div>
+            <div class="ml-2">{{user.name}} {{user.lastName}}</div>
             <button type="button" pButton (click)="unblockUser(user.id)" icon="pi pi-times"></button>
           </div>
         </div>

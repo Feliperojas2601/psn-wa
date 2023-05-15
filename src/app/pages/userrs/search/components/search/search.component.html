@@ -12,10 +12,7 @@
         </div>
         <div class="p-listbox-list">
           <div class="p-listbox-item" *ngFor="let user of recentSearchedUsers">
-            <div class="mr-2">{{user.name}} {{user.lastName}}</div>
-            <button type="button" pButton (click)="createConversation(user.id)" icon="pi pi-comment"></button>
-            <button type="button" pButton (click)="blockUser(user.id)" icon="pi pi-times"></button>
-            <button type="button" pButton icon="pi pi-search" routerLink="/psn/profile/{{user.id}}"></button>
+            <div class="mr-2" routerLink="/psn/profile/{{user.id}}">{{user.name}} {{user.lastName}}</div>
           </div>
         </div>
       </div>
@@ -24,10 +21,17 @@
       <div class="p-listbox mt-3 suggestedUser-table">
         <div class="p-listbox-header">Amigos sugeridos</div>
         <div class="p-listbox-list suggestedUser-container">
-          <div class="p-listbox-item" *ngFor="let user of suggestedUsers">
-            <div class="mr-2">{{user.name}} {{user.lastName}}</div>
-            <button type="button" pButton label="Ver" routerLink="/psn/profile/{{user.id}}"></button>
-            <button type="button" pButton (click)="followUser(user.id)" label="Agregar"></button>
+          <div class="p-listbox-item" *ngFor="let user of suggestedUsers; let i=index">
+            <div class="profile-link">
+              <div class="profile-image-min" alt="Profile Image">
+                <img [src]="profileImageUrls[i]"/>
+              </div> 
+              <div class="profile-buttons">
+                <div class="ml-3">{{user.name}} {{user.lastName}}</div>
+                <button type="button" pButton label="Ver" routerLink="/psn/profile/{{user.id}}"></button>
+                <button type="button" pButton (click)="followUser(user.id)" label="Agregar"></button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

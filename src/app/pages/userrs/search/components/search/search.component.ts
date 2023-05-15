@@ -1,6 +1,5 @@
-import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { FollowService } from '../../../follow/services/follow.service';
+import { UserService } from '../../../../user/services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserSearch } from '../../interfaces/userSearch.interface';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -18,8 +17,9 @@ import Swal from 'sweetalert2';
 export class SearchComponent implements OnInit, OnDestroy {
   
   public subscriptionToDestroy: Subscription[] = [];
+  public profileImageUrls: string[] = [];
 
-  public filteredUsers!: UserSearch [];
+  public filteredUsers!: UserSearch[];
   public recentSearchedUsers!: UserSearch[]; 
   public suggestedUsers!: UserSearch[];
   public suggestedFilteredUsers!: UserSearch[];
@@ -27,10 +27,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   public searchFormValue!: UserSearch; 
 
   constructor(
-    private coversationService: ConversationService,
     private readonly searchService: SearchService,
     private readonly authService: AuthService,
-    private followService: FollowService,
+    private userService: UserService,
     private readonly fb: FormBuilder,
     private readonly router: Router,
   ) { }
@@ -63,6 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.suggestedUsers = resp.data.findAllSuggestedFriends.map((user: UserSearch) => {
           return user; 
         });
+        this.loadProfilePictures(this.suggestedUsers.map((user) => {return user.id}));
       }, 
       error: (err: any) => {
         if (err.toString() === "ApolloError: Cannot read property 'Props' of null") {
@@ -74,6 +74,17 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptionToDestroy.push(subGetAllSuggestedUsers);
+  }
+
+  private loadProfilePictures(ids: number[]): void {
+    let subGetProfilePicture = this.userService.getProfilePicture(ids).subscribe({
+      next: (resp: any) => {
+        this.profileImageUrls = resp.data.getProfilePicture;
+      },
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+
+    this.subscriptionToDestroy.push(subGetProfilePicture);
   }
 
   public deleteRecentSearchedUsers(): void {
@@ -141,29 +152,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptionToDestroy.push(subSearchUser);
-  }
-
-  public createConversation(id: number): void {
-    let subCreateConversation = this.coversationService.createConversation(id).subscribe({
-      next: (_resp: any) => {
-        Swal.fire('Success', 'Conversation created', 'success');
-        this.router.navigate([`psn/chat`]);
-      }, 
-      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-    });
-
-    this.subscriptionToDestroy.push(subCreateConversation);
-  }
-
-  public blockUser(id: number): void {
-    let subBlockUser = this.followService.blockUser(id).subscribe({
-      next: (_resp: any) => {
-        Swal.fire('Success', 'User blocked', 'success');
-      }, 
-      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-    });
-
-    this.subscriptionToDestroy.push(subBlockUser);
   }
 
   ngOnDestroy() {

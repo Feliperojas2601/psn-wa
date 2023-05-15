@@ -1,0 +1,11 @@
+{
+    "/api/*": {
+        "target": "http://psn-ag-service:4500/",
+        "secure": false,
+        "pathRewrite": {
+            "^/api": ""
+        },
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+} 

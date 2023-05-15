@@ -3,15 +3,17 @@
     <div class="profile-image-container">
       <div class="profile-image" alt="Profile Image">
         <img [src]="profileImageUrl"/>
-      </div>     
+      </div> 
       <p-button *ngIf="showButtonImage" class="change-image-button p-button-icon-only" (click)="changeProfileImage()">
         <i class="pi pi-camera"></i>
       </p-button> 
-      <div>
-      <p-dialog header="Subir imagen" [(visible)]="displayImageUploadDialog">
+      <p-dialog header="Subir imagen" [(visible)]="displayButtons">
         <p-fileUpload name="photo" url="{{profileImageUrlPost}}" accept="image/png" (onUpload)="handleUpload()"></p-fileUpload>
       </p-dialog>
-    </div>
+      <div class="user-buttons" *ngIf="!showButtonImage">
+        <button type="button" pButton (click)="createConversation(user.id)" icon="pi pi-comment"></button>
+        <button type="button" pButton (click)="blockUser(user.id)" icon="pi pi-times"></button>
+      </div>
     </div>
     <div class="profile-info">
       <h2>Información de perfil</h2>

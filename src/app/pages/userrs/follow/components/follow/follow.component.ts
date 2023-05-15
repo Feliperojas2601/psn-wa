@@ -70,27 +70,6 @@ export class FollowComponent implements OnInit {
     this.subscriptionToDestroy.push(subGetBlockedUsers);
   }
 
-  public blockUser(id: number): void {
-    let subBlockUser = this.followService.blockUser(id).subscribe({
-      next: (_resp: any) => {
-        Swal.fire('Success', 'User blocked', 'success');
-        const previousFollowedUsers = this.followedUsers;
-        const user: UserSearch = previousFollowedUsers.find((user: UserSearch) => user.id === id) || {
-          id: 0,
-          name: '',
-          lastName: '',
-          email: '',
-          completeName: '',
-        };
-        this.followedUsers = previousFollowedUsers.filter((user: UserSearch) => user.id !== id);
-        this.blockedUsers = [...this.blockedUsers, user];
-      }, 
-      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-    });
-
-    this.subscriptionToDestroy.push(subBlockUser);
-  }
-
   public unblockUser(id: number): void {
     let subUnblockUser = this.followService.unblockUser(id).subscribe({
       next: (_resp: any) => {
@@ -149,18 +128,6 @@ export class FollowComponent implements OnInit {
     });
 
     this.subscriptionToDestroy.push(subRejectFollowUser);
-  }
-
-  public createConversation(id: number): void {
-    let subCreateConversation = this.coversationService.createConversation(id).subscribe({
-      next: (_resp: any) => {
-        Swal.fire('Success', 'Conversation created', 'success');
-        this.router.navigate([`psn/chat`]);
-      }, 
-      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
-    });
-
-    this.subscriptionToDestroy.push(subCreateConversation);
   }
 
   ngOnDestroy() {
