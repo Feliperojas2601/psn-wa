@@ -1,6 +1,6 @@
 import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
 import { FollowService } from '../userrs/follow/services/follow.service';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileForm } from './interfaces/profile-form.interface';
 import { AuthService } from '../../auth/services/auth.service';
@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./user.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class UserComponent implements OnInit{
+export class UserComponent implements OnInit, OnDestroy{
 
   public subscriptionToDestroy: Subscription[] = [];
   public profileTypeOptions: { label: string, value: string }[];
@@ -63,6 +63,8 @@ export class UserComponent implements OnInit{
 
     this.activatedRoute.params.subscribe( ({ id }) => {
       this.id = Math.floor(id);
+      this.loadProfilePicture(this.id);
+      this.loadUserInfo(this.id);
     });
 
     let roleFormControl = this.profileForm.get('role');
