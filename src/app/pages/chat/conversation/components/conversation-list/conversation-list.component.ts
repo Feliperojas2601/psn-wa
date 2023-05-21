@@ -32,7 +32,6 @@ export class ConversationListComponent implements OnInit {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetConversationsByUser);
   }
 
@@ -44,13 +43,12 @@ export class ConversationListComponent implements OnInit {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subDeleteConversationByUser);
   }
 
-  public navigateToConversation(id: number, username: string): void {
+  public navigateToConversation(id: number, username: string, membersId: number[]): void {
     const currentUrl = this.router.url;
-    const newUrl = `${currentUrl}/${id}/${username}`;
+    const newUrl = `${currentUrl}/${id}/${username}/${membersId}`;
     this.router.navigateByUrl(newUrl);
   }
 

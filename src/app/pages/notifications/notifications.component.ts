@@ -30,7 +30,6 @@ export class NotificationsComponent {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetNotificationsByUser);
   }
 
@@ -44,7 +43,6 @@ export class NotificationsComponent {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     }); 
-
     this.subscriptionToDestroy.push(subGetNotificationsByUserSocket);    
   }
 

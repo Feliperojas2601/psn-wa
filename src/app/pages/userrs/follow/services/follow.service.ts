@@ -17,7 +17,6 @@ export class FollowService {
         query findAllFollowedUsers{
           findAllFollowedUsers{
             id
-            email
             name 
             lastName
           }        
@@ -33,7 +32,6 @@ export class FollowService {
         query findAllFollowRequests{
           findAllFollowRequests{
             id
-            email
             name 
             lastName
           }        
@@ -49,7 +47,6 @@ export class FollowService {
         query findAllBlockedUsers{
           findAllBlockedUsers{
             id
-            email
             name 
             lastName
           }        

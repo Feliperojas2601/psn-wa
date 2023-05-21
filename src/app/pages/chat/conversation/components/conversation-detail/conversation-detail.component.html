@@ -17,7 +17,7 @@
       <div class="message-input-container p-d-flex">
         <form [formGroup]="chatForm" (ngSubmit)="createMessage()">
           <input type="text" placeholder="Escribe tu mensaje aquí" formControlName="content" pInputText>
-          <p-button type="submit" label="Enviar" [disabled]="!this.chatForm.valid"></p-button>
+          <p-button type="submit" label="Enviar" [disabled]="!this.chatForm.valid || isBlockedUser"></p-button>
         </form>
       </div>
     </div>

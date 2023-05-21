@@ -1,7 +1,9 @@
 import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
-import { FollowService } from '../userrs/follow/services/follow.service';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { FollowService } from '../userrs/follow/services/follow.service';
+import { SearchService } from '../userrs/search/services/search.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Relationship } from './interfaces/relationship-interface';
 import { ProfileForm } from './interfaces/profile-form.interface';
 import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from './services/user.service';
@@ -23,8 +25,12 @@ export class UserComponent implements OnInit, OnDestroy{
   public profileTypeOptions: { label: string, value: string }[];
 
   public displayButtons!: boolean;
+  public showFollowUserButton!: boolean;
+  public showUnFollowUserButton!: boolean;
+  public showBlockUserButton!: boolean;
+  public showUnblockUserButton!: boolean;
   public showButtonSubmit!: boolean;
-  public showButtonImage!: boolean;
+  public showButtons!: boolean;
   public profileForm!: FormGroup;
   public profileFormValue!: ProfileForm;
   public profileImageUrlPost!: string;
@@ -36,6 +42,7 @@ export class UserComponent implements OnInit, OnDestroy{
     private coversationService: ConversationService,
     private activatedRoute: ActivatedRoute,
     private followService: FollowService,
+    private searchService: SearchService,
     private userService: UserService, 
     private authService: AuthService,
     private fb: FormBuilder, 
@@ -43,6 +50,10 @@ export class UserComponent implements OnInit, OnDestroy{
   ) {
     this.profileImageUrl = '../../assets/images/logo.jpg';
     this.displayButtons = false;
+    this.showFollowUserButton = false;
+    this.showUnFollowUserButton = false;
+    this.showBlockUserButton = false;
+    this.showUnblockUserButton = false;
     this.profileTypeOptions = [
       { label: 'PUBLIC', value: 'PUBLIC' },
       { label: 'PRIVATE', value: 'PRIVATE' },
@@ -65,6 +76,7 @@ export class UserComponent implements OnInit, OnDestroy{
       this.id = Math.floor(id);
       this.loadProfilePicture(this.id);
       this.loadUserInfo(this.id);
+      this.getRelationsToUser(this.id);
     });
 
     let roleFormControl = this.profileForm.get('role');
@@ -73,7 +85,7 @@ export class UserComponent implements OnInit, OnDestroy{
     roleFormControl?.disable();
 
     if(this.authService.getUserId() != this.id){
-      this.showButtonImage = this.showButtonSubmit = false;
+      this.showButtons = this.showButtonSubmit = false;
       let emailFormControl = this.profileForm.get('email');
       let nameFormControl = this.profileForm.get('name');
       let lastNameFormControl = this.profileForm.get('lastName');
@@ -88,32 +100,30 @@ export class UserComponent implements OnInit, OnDestroy{
       nameFormControl?.disable();
       emailFormControl?.disable();
     }else{
-      this.showButtonImage = this.showButtonSubmit = true; 
+      this.showButtons = this.showButtonSubmit = true; 
     }
-
-    this.loadProfilePicture(this.id);
-    this.loadUserInfo(this.id);
   }
 
   private loadUserInfo(id: number): void {
     let subFindUserById = this.userService.findUserById(id).subscribe({
-        next: (resp: any) => {
-          this.user = resp.data.findUserById;
-          this.profileForm.setValue({
-            role: this.user.role,
-            email: this.user.email,
-            name: this.user.name,
-            lastName: this.user.lastName,
-            phoneNumber: this.user.phoneNumber,
-            notificationsEnable: this.user.notificationsEnable,
-            profileUpdateDate: this.user.profileUpdateDate,
-            profileType: this.user.profileType
-          });
-        }, 
-        error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+      next: (resp: any) => {
+        this.user = resp.data.findUserById;
+        this.profileForm.setValue({
+          role: this.user.role,
+          email: this.user.email,
+          name: this.user.name,
+          lastName: this.user.lastName,
+          phoneNumber: this.user.phoneNumber,
+          notificationsEnable: this.user.notificationsEnable,
+          profileUpdateDate: this.user.profileUpdateDate,
+          profileType: this.user.profileType
+        });
+      }, 
+      error: (err: any) => {
+        Swal.fire('Error', err.toString(), 'error')
+        this.router.navigateByUrl("/psn/userrs/search")
       }
-    );
-
+    });
     this.subscriptionToDestroy.push(subFindUserById);
   }
 
@@ -124,20 +134,71 @@ export class UserComponent implements OnInit, OnDestroy{
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetProfilePicture);
   }
   
+  private getRelationsToUser(id: number): void {
+    let subGetRelationsToUser = this.userService.getRelationsToUser(id).subscribe({
+      next: (resp: any) => {
+        let relations = resp.data.getRelationsToUser;
+        const existFollow = relations.find((relation: Relationship) => relation.name == "FOLLOW");
+        if(existFollow){
+          this.showUnFollowUserButton = true;
+        }else{
+          this.showFollowUserButton = true;
+        }
+
+        const existBlock = relations.find((relation: Relationship) => relation.name == "BLOCK");
+        if(existBlock){
+          this.showUnblockUserButton = true;
+        }else{
+          this.showBlockUserButton = true;
+        }
+
+      },
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+    this.subscriptionToDestroy.push(subGetRelationsToUser);
+  }
+
   public createConversation(id: number): void {
     let subCreateConversation = this.coversationService.createConversation(id).subscribe({
       next: (_resp: any) => {
         Swal.fire('Success', 'Conversation created', 'success');
         this.router.navigate([`psn/chat`]);
       }, 
+      error: (err: any) => {
+        if(err.toString() == "ApolloError: Previous conversation with those members already exists"){
+          this.router.navigateByUrl("/psn/chat")
+        }else{
+          Swal.fire('Error', err.toString(), 'error')
+        }
+      }
+    });
+    this.subscriptionToDestroy.push(subCreateConversation);
+  }
+
+  public followUser(userId: number): void {
+    let subFollowUser = this.searchService.followUser(userId).subscribe({
+      next: (_resp: any) => {
+        Swal.fire('Success', 'Requested follow successfully', 'success');
+        this.showFollowUserButton = false;
+      }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
+    this.subscriptionToDestroy.push(subFollowUser);
+  }
 
-    this.subscriptionToDestroy.push(subCreateConversation);
+  public unFollowUser(id: number): void {
+    let subUnFollowUser = this.followService.unFollowUser(id).subscribe({
+      next: (_resp: any) => {
+        Swal.fire('Success', 'User unfollowed', 'success');
+        this.showUnFollowUserButton = false;
+        this.showFollowUserButton = true;
+      },
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+    this.subscriptionToDestroy.push(subUnFollowUser);
   }
 
   public blockUser(id: number): void {
@@ -148,8 +209,19 @@ export class UserComponent implements OnInit, OnDestroy{
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subBlockUser);
+  }
+
+  public unblockUser(id: number): void {
+    let subUnblockUser = this.followService.unblockUser(id).subscribe({
+      next: (_resp: any) => {
+        Swal.fire('Success', 'User unblocked', 'success');
+        this.showUnblockUserButton = false;
+        this.showBlockUserButton = true;
+      }, 
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+    this.subscriptionToDestroy.push(subUnblockUser);
   }
 
   public changeProfileImage(): void {
@@ -161,7 +233,6 @@ export class UserComponent implements OnInit, OnDestroy{
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
-
     this.subscriptionToDestroy.push(subChangeProfilePicture);
   }
 
@@ -174,7 +245,6 @@ export class UserComponent implements OnInit, OnDestroy{
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
       }
     );
-
     this.subscriptionToDestroy.push(subEditUserById);
   }
 

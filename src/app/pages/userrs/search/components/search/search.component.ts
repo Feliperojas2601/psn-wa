@@ -52,7 +52,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetAllSearchedUsers);
   }
 
@@ -64,15 +63,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
         this.loadProfilePictures(this.suggestedUsers.map((user) => {return user.id}));
       }, 
-      error: (err: any) => {
-        if (err.toString() === "ApolloError: Cannot read property 'Props' of null") {
-          this.suggestedUsers = [];
-        } else {
-          Swal.fire('Error', err.toString(), 'error')
-        }
-      }
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetAllSuggestedUsers);
   }
 
@@ -83,7 +75,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetProfilePicture);
   }
 
@@ -95,7 +86,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subDeleteRecentSearchedUsers);    
   }
 
@@ -107,7 +97,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subFollowUser);
   }
 
@@ -122,21 +111,14 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
         this.filteredUsers = filtered.map((user: UserSearch) => {
           if (user.id == this.authService.getUserId()) {
-            return {
-              ...user,
-              completeName: `${user.name} ${user.lastName} - Yo`
-            }
+            return {...user, completeName: `${user.name} ${user.lastName} - Yo`}
           } else {
-            return {
-              ...user, 
-              completeName: `${user.name} ${user.lastName}`
-            };
+            return {...user, completeName: `${user.name} ${user.lastName}`};
           }
         });
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subSearchUsers);
   }
 
@@ -150,7 +132,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subSearchUser);
   }
 

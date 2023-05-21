@@ -30,7 +30,7 @@
         <div class="p-listbox-list blockRequest-container">
           <div class="p-listbox-item" *ngFor="let user of blockedUsers">
             <div class="ml-2">{{user.name}} {{user.lastName}}</div>
-            <button type="button" pButton (click)="unblockUser(user.id)" icon="pi pi-times"></button>
+            <button type="button" pButton (click)="unblockUser(user.id)" icon="pi pi-lock-open"></button>
           </div>
         </div>
       </div>

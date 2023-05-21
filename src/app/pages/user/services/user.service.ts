@@ -87,4 +87,22 @@ export class UserService {
     });
   }
 
+  public getRelationsToUser(id: number): Observable<MutationResult> {
+    const GETRELATIONSTOUSER = gql`
+        query GetRelationsToUser($idD: Int) {
+          getRelationsToUser(idD: $idD) {
+            idO
+            name
+          }
+        }
+    `;
+
+    return this.apollo.mutate({
+      mutation: GETRELATIONSTOUSER,
+      variables: {
+        idD: id, 
+      }
+    });
+  }
+
 }

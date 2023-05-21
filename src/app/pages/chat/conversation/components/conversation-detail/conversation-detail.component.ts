@@ -1,3 +1,4 @@
+import { Relationship } from '../../../../user/interfaces/relationship-interface';
 import { MessageService } from '../../../message/services/message.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -16,35 +17,40 @@ export class ConversationDetailComponent {
 
   public subscriptionToDestroy: Subscription[] = [];
   public messages!: Message[];
+  public membersId!: number[];
 
   public id!: string;
   public username!: string;
   public chatForm!: FormGroup; 
   public chatFormValue!: string; 
+  public isBlockedUser!: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private messageService: MessageService, 
     private authService: AuthService,
     private fb: FormBuilder,
-  ) {}
+  ) {
+    this.isBlockedUser = false;
+  }
   
   ngOnInit(): void {
-    let subscriptionActiveParams = this.activatedRoute.params.subscribe( ({ id, username }) => {
-      this.id = id;  
+    let subscriptionActiveParams = this.activatedRoute.params.subscribe(({ id, username, membersId }) => {
+      this.membersId = membersId.split(",").map(Number);
       this.username = username;
+      this.id = id; 
+
+      this.getMessagesByConversation();
+      this.messageService.connectToChatSocket(this.authService.getUserId(), this.id);
+      this.getMessagesDeletedByConversationSocket();
+      this.getMessagesByConversationSocket();
+      this.askBlockedUser();
     });
     this.subscriptionToDestroy.push(subscriptionActiveParams);
 
     this.chatForm = this.fb.group({
       content: ['', Validators.required],
     });
-
-    this.getMessagesByConversation();
-
-    this.messageService.connectToChatSocket(this.authService.getUserId(), this.id);
-    this.getMessagesByConversationSocket();
-    this.getMessagesDeletedByConversationSocket();
   }
 
   public getMessagesByConversation(): void {
@@ -70,7 +76,6 @@ export class ConversationDetailComponent {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetMessagesByConversation);
   }
 
@@ -95,7 +100,6 @@ export class ConversationDetailComponent {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetMessagesByConversationSocket);
   }
 
@@ -108,7 +112,6 @@ export class ConversationDetailComponent {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetMessagesDeletedByConversationSocket);
   }
 
@@ -116,6 +119,38 @@ export class ConversationDetailComponent {
     this.chatFormValue = this.chatForm.value.content as string;
     this.chatForm.patchValue({ content: '' });
     this.messageService.createMessageSocket(this.chatFormValue, this.id, this.authService.getUserId());
+  }
+
+  public askBlockedUser(): void {
+    let idD = this.membersId[0];
+    if(this.authService.getUserId() == idD){
+      idD = this.membersId[1];
+    }
+
+    let subGetRelationsToUser = this.messageService.getRelationsToUser(idD).subscribe({
+      next: (resp: any) => {
+        let relations = resp.data.getRelationsToUser;
+        let exists = relations.find((relation: Relationship) => relation.name == "BLOCK");
+        if(exists){
+          this.isBlockedUser = true;
+          Swal.fire('Error', "User block", 'error');
+        }else{
+          let subGetRelationsToUser = this.messageService.isBlockedUser(idD).subscribe({
+            next: (resp: any) => {
+              if(resp.data.isBlockedUser == true){
+                this.isBlockedUser = true;
+                Swal.fire('Error', "User block", 'error');
+              }
+            },
+            error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+          });
+          this.subscriptionToDestroy.push(subGetRelationsToUser);
+        }
+      },
+      error: (err: any) => Swal.fire('Error', err.toString(), 'error')
+    });
+    this.subscriptionToDestroy.push(subGetRelationsToUser);
+
   }
 
   ngOnDestroy() {

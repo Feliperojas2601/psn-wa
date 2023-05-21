@@ -17,7 +17,6 @@ export class SearchService {
         query findAllSearchedUsers{
           findAllSearchedUsers{
             id
-            email
             name 
             lastName  
           } 
@@ -33,7 +32,6 @@ export class SearchService {
         query findAllSuggestedFriends{
           findAllSuggestedFriends{
             id
-            email
             name 
             lastName
           }                
@@ -88,7 +86,6 @@ export class SearchService {
         query searchUser($pattern: String!) {
           searchUser(pattern: $pattern){
             id
-            email
             name 
             lastName
           }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { SocketChat } from '../../chat.module';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { SocketChat } from '../../chat.module';
 
 @Injectable({
   providedIn: 'root'
@@ -73,6 +73,39 @@ export class MessageService {
 
   public getMessagesDeletedByConversationSocket(): Observable<any> {
     return this.socket.fromEvent('DELETED_MESSAGE');
+  }
+
+  public getRelationsToUser(id: number): Observable<ApolloQueryResult<any>> {
+    const GETRELATIONSTOUSER = gql`
+        query GetRelationsToUser($idD: Int) {
+          getRelationsToUser(idD: $idD) {
+            idO
+            name
+          }
+        }
+    `;
+
+    return this.apollo.query({
+      query: GETRELATIONSTOUSER,
+      variables: {
+        idD: id, 
+      }
+    });
+  }
+
+  public isBlockedUser(id: number): Observable<ApolloQueryResult<any>> {
+    const ISBLOCKEDUSER = gql`
+        query Query($idD: Int) {
+          isBlockedUser(idD: $idD)
+        }
+    `;
+
+    return this.apollo.query({
+      query: ISBLOCKEDUSER,
+      variables: {
+        idD: id, 
+      }
+    });
   }
 
 }

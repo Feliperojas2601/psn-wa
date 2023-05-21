@@ -1,8 +1,6 @@
-import { ConversationService } from 'src/app/pages/chat/conversation/services/conversation.service';
 import { UserSearch } from '../../../search/interfaces/userSearch.interface';
 import { FollowService } from '../../services/follow.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
@@ -21,8 +19,6 @@ export class FollowComponent implements OnInit {
 
   constructor(
     private followService: FollowService,
-    private coversationService: ConversationService,
-    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +36,6 @@ export class FollowComponent implements OnInit {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetFollow);
   }
 
@@ -53,7 +48,6 @@ export class FollowComponent implements OnInit {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetRequestFollowedUsers);
   }
 
@@ -66,7 +60,6 @@ export class FollowComponent implements OnInit {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subGetBlockedUsers);
   }
 
@@ -75,19 +68,11 @@ export class FollowComponent implements OnInit {
       next: (_resp: any) => {
         Swal.fire('Success', 'User unblocked', 'success');
         const previousBlockedUsers = this.blockedUsers;
-        const user: UserSearch = previousBlockedUsers.find((user: UserSearch) => user.id === id) || {
-          id: 0,
-          name: '',
-          lastName: '',
-          email: '',
-          completeName: '',
-        };
         this.blockedUsers = previousBlockedUsers.filter((user: UserSearch) => user.id !== id);
         this.getFollowedUsers();
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subUnblockUser);
   }
 
@@ -100,7 +85,6 @@ export class FollowComponent implements OnInit {
       },
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subUnFollowUser);
   }
 
@@ -113,7 +97,6 @@ export class FollowComponent implements OnInit {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subAcceptFollowUser);
   }
 
@@ -126,7 +109,6 @@ export class FollowComponent implements OnInit {
       }, 
       error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     });
-
     this.subscriptionToDestroy.push(subRejectFollowUser);
   }
 

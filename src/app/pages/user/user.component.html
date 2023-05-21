@@ -4,15 +4,18 @@
       <div class="profile-image" alt="Profile Image">
         <img [src]="profileImageUrl"/>
       </div> 
-      <p-button *ngIf="showButtonImage" class="change-image-button p-button-icon-only" (click)="changeProfileImage()">
+      <p-button *ngIf="showButtons" class="change-image-button p-button-icon-only" (click)="changeProfileImage()">
         <i class="pi pi-camera"></i>
       </p-button> 
       <p-dialog header="Subir imagen" [(visible)]="displayButtons">
         <p-fileUpload name="photo" url="{{profileImageUrlPost}}" accept="image/png" (onUpload)="handleUpload()"></p-fileUpload>
       </p-dialog>
-      <div class="user-buttons" *ngIf="!showButtonImage">
+      <div class="user-buttons" *ngIf="!showButtons">
         <button type="button" pButton (click)="createConversation(user.id)" icon="pi pi-comment"></button>
-        <button type="button" pButton (click)="blockUser(user.id)" icon="pi pi-times"></button>
+        <button type="button" pButton *ngIf="showFollowUserButton" (click)="followUser(user.id)" icon="pi pi-user-plus"></button>
+        <button type="button" pButton *ngIf="showUnFollowUserButton" (click)="unFollowUser(user.id)" icon="pi pi-user-minus"></button>
+        <button type="button" pButton *ngIf="showBlockUserButton" (click)="blockUser(user.id)" icon="pi pi-lock"></button>
+        <button type="button" pButton *ngIf="showUnblockUserButton" (click)="unblockUser(user.id)" icon="pi pi-lock-open"></button>
       </div>
     </div>
     <div class="profile-info">
