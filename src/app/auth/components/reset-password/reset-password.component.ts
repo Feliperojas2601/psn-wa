@@ -26,6 +26,7 @@ export class ResetPasswordComponent implements OnInit {
 
   public requestResetPassword(): void {
     this.resetPasswordFormValue = this.resetPasswordForm.value.email as string;
+    console.log(this.resetPasswordFormValue);
     this.authService.requestResetPassword( this.resetPasswordFormValue )
     .subscribe(
       {
