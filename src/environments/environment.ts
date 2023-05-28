@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
   baseUrl: '/api/', 
-  baseUrlNotificationSocket: 'http://35.231.10.62:4401/notification', 
-  baseUrlChatSocket: 'http://104.196.217.230:4300/chat/message'
+  baseUrlNotificationSocket: 'http://psn-notification-ws-ms-service:4401/notification', 
+  baseUrlChatSocket: 'http://psn-chat-ms-service:4300/chat/message'
 };

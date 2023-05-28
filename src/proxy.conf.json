@@ -1,6 +1,6 @@
 {
     "/api/*": {
-        "target": "http://34.139.65.55:4500/",
+        "target": "http://psn-ag-service:4500/",
         "secure": false,
         "pathRewrite": {
             "^/api": ""
