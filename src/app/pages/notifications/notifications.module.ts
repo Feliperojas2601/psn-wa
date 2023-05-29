@@ -11,7 +11,9 @@ const urlNotification = environment.baseUrlNotificationSocket;
 @Injectable()
 export class SocketNotification extends Socket {
   constructor() {
-    super({ url: urlNotification, options: {} });
+    super({ url: urlNotification, options: {
+      path: "/notification/socket.io"
+    } });
   }
 }
 

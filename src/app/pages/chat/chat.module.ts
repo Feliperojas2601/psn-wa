@@ -13,7 +13,9 @@ const urlChat = environment.baseUrlChatSocket;
 @Injectable()
 export class SocketChat extends Socket {
   constructor() {
-    super({ url: urlChat, options: {} });
+    super({ url: urlChat, options: {
+      path: "/chat/socket.io"
+    } });
   }
 }
 

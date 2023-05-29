@@ -77,6 +77,26 @@ export class UserComponent implements OnInit, OnDestroy{
       this.loadProfilePicture(this.id);
       this.loadUserInfo(this.id);
       this.getRelationsToUser(this.id);
+
+      if(this.authService.getUserId() != this.id){
+        this.showButtons = this.showButtonSubmit = false;
+        let emailFormControl = this.profileForm.get('email');
+        let nameFormControl = this.profileForm.get('name');
+        let lastNameFormControl = this.profileForm.get('lastName');
+        let phoneNumberFormControl = this.profileForm.get('phoneNumber');
+        let profileTypeFormControl = this.profileForm.get('profileType');
+        let notificationsEnableFormControl = this.profileForm.get('notificationsEnable');
+  
+        notificationsEnableFormControl?.disable();
+        profileTypeFormControl?.disable();
+        phoneNumberFormControl?.disable();
+        lastNameFormControl?.disable();
+        nameFormControl?.disable();
+        emailFormControl?.disable();
+      }else{
+        this.showButtons = this.showButtonSubmit = true; 
+      }
+
     });
 
     let roleFormControl = this.profileForm.get('role');
@@ -84,24 +104,6 @@ export class UserComponent implements OnInit, OnDestroy{
     profileUpdateDateFormControl?.disable();
     roleFormControl?.disable();
 
-    if(this.authService.getUserId() != this.id){
-      this.showButtons = this.showButtonSubmit = false;
-      let emailFormControl = this.profileForm.get('email');
-      let nameFormControl = this.profileForm.get('name');
-      let lastNameFormControl = this.profileForm.get('lastName');
-      let phoneNumberFormControl = this.profileForm.get('phoneNumber');
-      let profileTypeFormControl = this.profileForm.get('profileType');
-      let notificationsEnableFormControl = this.profileForm.get('notificationsEnable');
-
-      notificationsEnableFormControl?.disable();
-      profileTypeFormControl?.disable();
-      phoneNumberFormControl?.disable();
-      lastNameFormControl?.disable();
-      nameFormControl?.disable();
-      emailFormControl?.disable();
-    }else{
-      this.showButtons = this.showButtonSubmit = true; 
-    }
   }
 
   private loadUserInfo(id: number): void {
