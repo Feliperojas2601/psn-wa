@@ -1,0 +1,13 @@
+.card-footer {
+  display: flex;
+  width: 100%;
+  background-color: var(--tertiary-color);
+  justify-content: center;
+  align-items: center;
+}
+
+.card-footer-text {
+  padding: 1rem;
+  color: #fff;
+  text-align: center;
+}

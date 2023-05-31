@@ -8,6 +8,15 @@
         "changeOrigin": true,
         "logLevel": "debug"
     },
+    "/interface/*": {
+        "target": "http://psn-interface-service:4700",
+        "secure": false,
+        "pathRewrite": {
+            "^/interface": ""
+        },
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
     "/notification/socket.io/*":{
         "target": "http://psn-notification-ws-ms-service:4401/",
         "ws": true,
