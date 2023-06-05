@@ -15,16 +15,17 @@ export class FooterService {
     private readonly apollo: Apollo,
   ) { }
 
-  public getTwoF(): Observable<ApolloQueryResult<any>> {
-    const GET_TWO_F = gql`
-        query getTwoF{
-          getTwoF{
-            name 
+  public getProduct(): Observable<ApolloQueryResult<any>> {
+    const GET_PRODUCT = gql`
+        query getProduct{
+          getProduct{
+            name, 
+            price
           } 
         }
     `;
     return this.apollo.watchQuery({
-      query: GET_TWO_F,
+      query: GET_PRODUCT,
       context: {
         uri: urlInterface,
         headers: {

@@ -6,10 +6,10 @@ export const environment = {
   baseUrlInterface: '/interface/',
 };
 
-//export const environment = {
+// export const environment = {
 //  production: false,
 //  baseUrl: 'http://localhost:4500', 
 //  baseUrlNotificationSocket: 'http://localhost:4401/notification', 
 //  baseUrlChatSocket: 'http://localhost:4300//chat/message', 
 //  baseUrlInterface: 'http://localhost:4700',
-//};
+// };

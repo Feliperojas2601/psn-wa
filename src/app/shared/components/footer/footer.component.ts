@@ -9,14 +9,16 @@ import Swal from 'sweetalert2';
 })
 export class FooterComponent implements OnInit {
 
-  public name: string = '2D';
+  public name: string = '2C';
+  public price: number = 0;
 
   constructor(private footerService: FooterService) { }
 
   ngOnInit() {
-    this.footerService.getTwoF().subscribe({
+    this.footerService.getProduct().subscribe({
         next: (result: any) => {
-          this.name = result.data.getTwoF.name;
+          this.name = result.data.getProduct.name;
+          this.price = result.data.getProduct.price;
         },
         error: (err: any) => Swal.fire('Error', err.toString(), 'error')
     }); 
