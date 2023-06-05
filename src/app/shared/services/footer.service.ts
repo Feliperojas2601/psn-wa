@@ -4,7 +4,7 @@ import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-const urlInterface = environment.baseUrlInterface + '/graphql';
+const urlInterface = environment.baseUrlInterface + 'graphql';
 
 @Injectable({
   providedIn: 'root'

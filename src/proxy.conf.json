@@ -1,6 +1,6 @@
 {
     "/api/*": {
-        "target": "http://psn-ag-service:4500",
+        "target": "http://psn-ag-service:4500/",
         "secure": false,
         "pathRewrite": {
             "^/api": ""
@@ -9,7 +9,7 @@
         "logLevel": "debug"
     },
     "/interface/*": {
-        "target": "http://psn-interface-service:4700",
+        "target": "http://psn-interface-service:4700/",
         "secure": false,
         "pathRewrite": {
             "^/interface": ""
